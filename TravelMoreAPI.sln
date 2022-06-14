@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelMoreAPI", "TravelMoreAPI\TravelMoreAPI.csproj", "{2C49DD17-F8CC-4AAA-AB50-1F79D93D8528}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C49DD17-F8CC-4AAA-AB50-1F79D93D8528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C49DD17-F8CC-4AAA-AB50-1F79D93D8528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C49DD17-F8CC-4AAA-AB50-1F79D93D8528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C49DD17-F8CC-4AAA-AB50-1F79D93D8528}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB5FFCBA-C8DD-41CB-88B0-68DF3AE6C4FA}
+	EndGlobalSection
+EndGlobal
