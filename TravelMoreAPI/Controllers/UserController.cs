@@ -22,16 +22,17 @@ namespace TravelMoreAPI.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
 
-        public UserController(UserDbContext context, IUserRepository repository)
+        public UserController(UserDbContext context, IUserRepository repository, IConfiguration configuration)
         {
             _context = context;
             _userRepository = repository;
-        }
-        
-        public UserController(IConfiguration configuration)
-        {
             _configuration = configuration;
         }
+        
+        //public UserController(IConfiguration configuration)
+        //{
+        //    _configuration = configuration;
+        //}
 
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
@@ -39,6 +40,7 @@ namespace TravelMoreAPI.Controllers
             return _userRepository.GetUsers();
         }
 
+        /*
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -47,12 +49,14 @@ namespace TravelMoreAPI.Controllers
             var user = _userRepository.GetUserById(id);
             return user == null ? NotFound() : Ok(user);
         }
+        */
+
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create(UserDto userDto)
         {
-            CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            PasswordProcessing.CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             var user = new User()
             {
@@ -78,7 +82,7 @@ namespace TravelMoreAPI.Controllers
             {
                 return BadRequest("UserName not found"); 
             }
-            if(!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            if(!PasswordProcessing.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
                 return BadRequest("Wrong Password");
             }
@@ -88,6 +92,7 @@ namespace TravelMoreAPI.Controllers
             return Ok(token);
         } 
 
+        /*
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -100,6 +105,7 @@ namespace TravelMoreAPI.Controllers
 
             return NoContent(); 
         }
+        
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -114,6 +120,7 @@ namespace TravelMoreAPI.Controllers
 
             return NoContent();
         }
+        */
 
         private string CreateToken(User user)
         {
@@ -123,7 +130,7 @@ namespace TravelMoreAPI.Controllers
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                    _configuration.GetSection("Appsettings:TokenContext").Value));
+                    _configuration.GetSection("Appsettings:Token").Value));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
@@ -136,26 +143,5 @@ namespace TravelMoreAPI.Controllers
 
             return jwt;
         }
-
-        public void CreatePasswordHash([FromBody] string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
-
-
-        public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
-            }
-
-        }
-
     } 
 }
