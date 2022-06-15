@@ -29,10 +29,6 @@ namespace TravelMoreAPI.Controllers
             _configuration = configuration;
         }
         
-        //public UserController(IConfiguration configuration)
-        //{
-        //    _configuration = configuration;
-        //}
 
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
@@ -40,7 +36,7 @@ namespace TravelMoreAPI.Controllers
             return _userRepository.GetUsers();
         }
 
-        /*
+
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -49,7 +45,6 @@ namespace TravelMoreAPI.Controllers
             var user = _userRepository.GetUserById(id);
             return user == null ? NotFound() : Ok(user);
         }
-        */
 
 
         [HttpPost]
@@ -92,7 +87,7 @@ namespace TravelMoreAPI.Controllers
             return Ok(token);
         } 
 
-        /*
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -120,7 +115,6 @@ namespace TravelMoreAPI.Controllers
 
             return NoContent();
         }
-        */
 
         private string CreateToken(User user)
         {
