@@ -47,7 +47,8 @@ namespace TravelMoreAPI.Controllers
             return user == null ? NotFound() : Ok(user);
         }
 
-        [DisableCors]
+        [EnableCors(origins: "http://loaclhost/3000",
+          headers: "accept,content-type,origin,x-my-header", methods: "*")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create(UserDto userDto)
