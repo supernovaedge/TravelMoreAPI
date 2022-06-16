@@ -5,21 +5,22 @@ using TravelMoreAPI.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-var MyAllowSpecificOrigins = "_MyAllowSubdomainPolicy";
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:3000")
-                .SetIsOriginAllowedToAllowWildcardSubdomains();
-        });
+    options.AddPolicy(MyAllowSpecificOrigins,
+                          policy =>
+                          {
+                              policy.WithOrigins("http://localhost:3000",
+                                                  "http://localhost:3000/auth/register")
+                                                  .AllowAnyHeader()
+                                                  .AllowAnyMethod();
+                          });
 });
 
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -38,12 +39,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseCors(MyAllowSpecificOrigins);
+
+app.UseHttpsRedirection();
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseCors(MyAllowSpecificOrigins);
 
 app.Run();

@@ -19,8 +19,8 @@ namespace TravelMoreAPI.Data
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
 
             modelBuilder.Entity<User>()
-               .HasIndex(u => new { u.UserName, u.Email })
-               .IsUnique();
+               .HasIndex(u => new { u.Email, u.UserName})
+               .IsUnique();               
         }
     }
 }
