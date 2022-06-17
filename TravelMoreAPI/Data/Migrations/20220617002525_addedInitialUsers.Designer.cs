@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelMoreAPI.Data;
 
@@ -11,9 +12,10 @@ using TravelMoreAPI.Data;
 namespace TravelMoreAPI.Data.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220617002525_addedInitialUsers")]
+    partial class addedInitialUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,35 @@ namespace TravelMoreAPI.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("TravelMoreAPI.Entities.Apartment", b =>
+                {
+                    b.Property<Guid>("ApartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BedsNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DistanceToCenter")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageBase64")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ApartmentId");
+
+                    b.ToTable("Apartments");
+                });
 
             modelBuilder.Entity("TravelMoreAPI.Entities.Booking", b =>
                 {
@@ -117,6 +148,8 @@ namespace TravelMoreAPI.Data.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("ApartmentId");
+
                     b.HasIndex("Email", "UserName")
                         .IsUnique();
 
@@ -125,7 +158,7 @@ namespace TravelMoreAPI.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("73d73af1-053e-4562-ba24-84bfd2148af1"),
+                            UserId = new Guid("c2f1bafe-af3d-4420-be5c-a8b17fb6452e"),
                             Email = "n_gurchiani@cu.edu.ge",
                             FirstName = "Nicolas",
                             LastName = "Gurchiani",
@@ -135,7 +168,7 @@ namespace TravelMoreAPI.Data.Migrations
                         },
                         new
                         {
-                            UserId = new Guid("27b6885d-55a5-4e30-8acf-08b9c94681fb"),
+                            UserId = new Guid("a1c95925-8b26-4468-bc2b-5141287008b8"),
                             Email = "test@user.co",
                             FirstName = "Test",
                             LastName = "User",
@@ -145,7 +178,7 @@ namespace TravelMoreAPI.Data.Migrations
                         },
                         new
                         {
-                            UserId = new Guid("f000d5fa-8d40-4dc6-926d-490ee97e59ff"),
+                            UserId = new Guid("785fad0d-f332-412c-8686-d38225581745"),
                             Email = "tuga@in.pl",
                             FirstName = "Alex",
                             LastName = "Salvado",
@@ -175,49 +208,9 @@ namespace TravelMoreAPI.Data.Migrations
 
             modelBuilder.Entity("TravelMoreAPI.Entities.User", b =>
                 {
-                    b.OwnsOne("TravelMoreAPI.Entities.Apartment", "Apartment", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Address")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<Guid>("ApartmentId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("BedsNumber")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("DistanceToCenter")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("ImageBase64")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("Apartments");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    UserId = new Guid("208faa1b-22a9-48c5-8a64-3f6153d8eb2c"),
-                                    Address = "panaskerteli 7",
-                                    ApartmentId = new Guid("94afc61e-6ea9-4331-8ce7-f6cb16be7792"),
-                                    BedsNumber = 3,
-                                    City = "Tbilisi",
-                                    DistanceToCenter = 2
-                                });
-                        });
+                    b.HasOne("TravelMoreAPI.Entities.Apartment", "Apartment")
+                        .WithMany()
+                        .HasForeignKey("ApartmentId");
 
                     b.Navigation("Apartment");
                 });
