@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -90,6 +91,20 @@ namespace TravelMoreAPI.Controllers
             return user == null ? NotFound() : Ok(user);
         }
 
+        [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Patch(Guid id,[FromBody] JsonPatchDocument<User> userEntity)
+        {
+            var entity = _context.Users.FirstOrDefault(User => User.UserId == id);
+           
+            if (entity == null) return NotFound("User not found");
+
+            userEntity.ApplyTo(entity, ModelState);
+
+            return Ok(entity);  
+        }
+
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -123,7 +138,7 @@ namespace TravelMoreAPI.Controllers
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim("userName: ", user.UserName)
+                new Claim("userName", user.UserName)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
