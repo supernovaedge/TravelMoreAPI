@@ -14,22 +14,21 @@ namespace TravelMoreAPI.Data
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<User> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.EnableSensitiveDataLogging();
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ApartmentEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new BookingEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new GuestEntityConfiguration());
 
             modelBuilder.Entity<User>()
                .HasIndex(u => new { u.Email, u.UserName})
                .IsUnique();
 
-           
         }
-            
+        
+
     }
  }
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace TravelMoreAPI.Repositories
 {
@@ -27,9 +28,14 @@ namespace TravelMoreAPI.Repositories
             return _context.Users.FirstOrDefault(x => x.UserId == id);
         }
 
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
         public IEnumerable<User> GetUsers()
         {
-            return _context.Users;
+            return _context.Users.Include(u => u.Apartment);
         }
     }
 }

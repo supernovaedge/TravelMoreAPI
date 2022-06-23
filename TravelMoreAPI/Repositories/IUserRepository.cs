@@ -7,5 +7,6 @@ namespace TravelMoreAPI.Repositories
         IEnumerable<User> GetUsers();
         User? GetUserById(Guid id);
         void AddUser(User user);
+        void SaveChanges();
     }
 }

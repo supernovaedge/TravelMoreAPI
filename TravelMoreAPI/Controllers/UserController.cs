@@ -23,18 +23,18 @@ namespace TravelMoreAPI.Controllers
     {
         private readonly UserDbContext _context;
         private readonly IUserRepository _userRepository;
-        private readonly IConfiguration _configuration;
+        private readonly ITokenCreationService _tokenCreationService;
 
-        public UserController(UserDbContext context, IUserRepository repository, IConfiguration configuration)
+        public UserController(UserDbContext context, IUserRepository repository, ITokenCreationService tokenCreationService)
         {
-            _context = context;
-            _userRepository = repository;
-            _configuration = configuration;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _userRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _tokenCreationService = tokenCreationService ?? throw new ArgumentNullException(nameof(tokenCreationService));
         }
 
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(UserDto userDto)
+        public ActionResult<User> Create(UserDto userDto)
         {
             PasswordProcessing.CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -51,7 +51,8 @@ namespace TravelMoreAPI.Controllers
 
             _userRepository.AddUser(user);
 
-            return Ok(User);
+
+            return Ok(user);
         }
 
 
@@ -68,7 +69,7 @@ namespace TravelMoreAPI.Controllers
                 return BadRequest("Wrong Password");
             }
 
-            string token = CreateToken(user);
+            string token = _tokenCreationService.CreateToken(user);
 
             return Ok(token);
         }
@@ -88,14 +89,17 @@ namespace TravelMoreAPI.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var user = _userRepository.GetUserById(id);
+
             return user == null ? NotFound() : Ok(user);
         }
+
 
         [HttpPatch("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Patch(Guid id,[FromBody] JsonPatchDocument<User> userEntity)
         {
+
             var entity = _context.Users.FirstOrDefault(User => User.UserId == id);
            
             if (entity == null) return NotFound("User not found");
@@ -134,26 +138,5 @@ namespace TravelMoreAPI.Controllers
             return NoContent();
         }
 
-        private string CreateToken(User user)
-        {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim("userName", user.UserName)
-            };
-
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                    _configuration.GetSection("Appsettings:Token").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds);
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
-        }
     } 
 }

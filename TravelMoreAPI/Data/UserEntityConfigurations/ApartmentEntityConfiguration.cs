@@ -23,7 +23,8 @@ public class ApartmentEntityConfiguration : IEntityTypeConfiguration<Apartment>
         builder.Property(u => u.BedsNumber)
             .IsRequired();
 
-        builder.Property(u => u.ImageBase64)
-            .IsRequired();
+        //builder.Property(u => u.ImageBase64)
+           // .IsRequired();
+
     }
 }

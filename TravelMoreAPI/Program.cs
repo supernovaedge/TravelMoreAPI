@@ -1,10 +1,16 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using TravelMoreAPI;
 using TravelMoreAPI.Data;
+using TravelMoreAPI.Entities;
+using TravelMoreAPI.Models;
 using TravelMoreAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
@@ -25,9 +31,16 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMvc();
+builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
+builder.Services.Configure<JwtTokenOptions>(builder.Configuration.GetSection("JwtToken"));
+
 builder.Services.AddDbContext<UserDbContext>(
     o => o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
+builder.Services.AddScoped<ITokenCreationService, TokenCreationService>();
 
 var app = builder.Build();
 

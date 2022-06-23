@@ -9,11 +9,11 @@ using TravelMoreAPI.Data;
 
 #nullable disable
 
-namespace TravelMoreAPI.Data.Migrations
+namespace TravelMoreAPI.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20220612122547_UsernameIsUnique")]
-    partial class UsernameIsUnique
+    [Migration("20220623133314_disabled64")]
+    partial class disabled64
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,15 +31,19 @@ namespace TravelMoreAPI.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("BedsNumber")
+                    b.Property<int>("BedsNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("DistanceToCenter")
+                    b.Property<int>("DistanceToCenter")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageBase64")
@@ -58,14 +62,13 @@ namespace TravelMoreAPI.Data.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime?>("StayFrom")
-                        .IsRequired()
+                    b.Property<DateTime>("StayFrom")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("StayTo")
-                        .IsRequired()
+                    b.Property<DateTime>("StayTo")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
@@ -85,16 +88,20 @@ namespace TravelMoreAPI.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime?>("HostFrom")
+                    b.Property<DateTime>("HostFrom")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("HostTo")
+                    b.Property<DateTime>("HostTo")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -115,27 +122,39 @@ namespace TravelMoreAPI.Data.Migrations
                     b.Property<Guid?>("ApartmentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("UserId");
 
                     b.HasIndex("ApartmentId");
 
-                    b.HasIndex("UserName")
+                    b.HasIndex("Email", "UserName")
                         .IsUnique();
 
                     b.ToTable("Users");
