@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Repositories;
@@ -30,12 +29,13 @@ namespace TravelMoreAPI.Controllers
             return _apartmentRepository.GetApartments();
         }
 
+
         [HttpPost("AddApartment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<User> Create(ApartmentDto ApartmentDto)
+        public ActionResult<User> Create(ApartmentDto apartmentDto)
         {
      
-            var userId = ApartmentDto.UserID;
+            var userId = apartmentDto.UserID;
 
             var entity = _userRepository.GetUserById(userId);
             if(entity == null)
@@ -47,11 +47,11 @@ namespace TravelMoreAPI.Controllers
             var apartment = new Apartment()
             {
                 ApartmentId = new Guid(),
-                City = ApartmentDto.City,
-                Address = ApartmentDto.Address,
-                BedsNumber = ApartmentDto.BedsNumber,
-                DistanceToCenter = ApartmentDto.DistanceToCenter,
-                ImageBase64 = ApartmentDto.ImageBase64,
+                City = apartmentDto.City,
+                Address = apartmentDto.Address,
+                BedsNumber = apartmentDto.BedsNumber,
+                DistanceToCenter = apartmentDto.DistanceToCenter,
+                ApartmentPicture = apartmentDto.ApartmentPicture,
             };
             _apartmentRepository.AddApartment(apartment);
 

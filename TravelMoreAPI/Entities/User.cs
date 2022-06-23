@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿
 
 namespace TravelMoreAPI.Entities
 {
@@ -10,6 +9,7 @@ namespace TravelMoreAPI.Entities
         public string LastName { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        public byte[]? UserPicture { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public Guid? ApartmentId { get; set; }
@@ -17,6 +17,5 @@ namespace TravelMoreAPI.Entities
         public List<Guest>? Guest { get; set; }
         public List<Booking>? Booking { get; set; }
 
-        private readonly UserManager<IdentityUser> _userManager;
     }
 }

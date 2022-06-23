@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
 using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
 using TravelMoreAPI.Models.Dtos;
@@ -39,6 +33,7 @@ namespace TravelMoreAPI.Controllers
         {
             PasswordProcessing.CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
+
             var user = new User()
             {
                 UserId = new Guid(),
@@ -48,12 +43,13 @@ namespace TravelMoreAPI.Controllers
                 Email = userDto.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
+                UserPicture = userDto.UserPicture,
             };
-
+            
             _userRepository.AddUser(user);
 
 
-            return Ok(user);
+            return Ok("User Created");
         }
 
 
