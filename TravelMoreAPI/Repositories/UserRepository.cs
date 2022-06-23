@@ -37,6 +37,25 @@ namespace TravelMoreAPI.Repositories
         {
             return _context.Users.Include(u => u.Apartment);
         }
+
+        public bool EmailValidation(string email)
+        {
+            var user = _context.Users.FirstOrDefault(m => m.Email == email);
+            if (email == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool UsernameValidation(string username)
+        {
+            if (_context.Users.FirstOrDefault(x => x.Email == username) == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
 

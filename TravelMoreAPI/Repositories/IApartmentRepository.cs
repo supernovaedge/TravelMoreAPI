@@ -8,5 +8,7 @@ namespace TravelMoreAPI.Repositories
         Apartment? GetApartmentById(Guid id);
 
         void AddApartment(Apartment apartment);
+
+        void SaveChanges();
     }
 }

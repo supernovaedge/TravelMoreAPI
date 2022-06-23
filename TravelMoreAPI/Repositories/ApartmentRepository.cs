@@ -28,5 +28,10 @@ namespace TravelMoreAPI.Repositories
         {
             _context.Apartments.Add(apartment);
         }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
     }
 }

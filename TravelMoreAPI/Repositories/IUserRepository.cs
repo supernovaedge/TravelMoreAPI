@@ -8,5 +8,8 @@ namespace TravelMoreAPI.Repositories
         User? GetUserById(Guid id);
         void AddUser(User user);
         void SaveChanges();
+
+        bool EmailValidation(string email);
+        bool UsernameValidation(string username);
     }
 }

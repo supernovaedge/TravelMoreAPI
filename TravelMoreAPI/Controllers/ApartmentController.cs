@@ -15,12 +15,11 @@ namespace TravelMoreAPI.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IApartmentRepository _apartmentRepository;
 
-        public ApartmentController(IApartmentRepository repository, IUserRepository userRepository)
+        public ApartmentController(IApartmentRepository apartmentRepository, IUserRepository userRepository)
         {
-            _userRepository = userRepository;
-            _apartmentRepository = repository;
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _apartmentRepository = apartmentRepository ?? throw new ArgumentNullException(nameof(apartmentRepository));
         }
-
 
 
         [HttpGet]

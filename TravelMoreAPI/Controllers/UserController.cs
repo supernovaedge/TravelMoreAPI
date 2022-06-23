@@ -45,7 +45,17 @@ namespace TravelMoreAPI.Controllers
                 PasswordSalt = passwordSalt,
                 UserPicture = userDto.UserPicture,
             };
-            
+
+            if (_userRepository.EmailValidation(userDto.Email))
+            {
+                return BadRequest("Email already in use");
+            }
+
+            if (_userRepository.UsernameValidation(userDto.UserName))
+            {
+                return BadRequest("Username already in use");
+            }
+
             _userRepository.AddUser(user);
 
 
@@ -73,7 +83,7 @@ namespace TravelMoreAPI.Controllers
 
 
 
-        [HttpGet]
+        [HttpGet("GetAllUsers")]
         public async Task<IEnumerable<User>> Get()
         {
             return _userRepository.GetUsers();
