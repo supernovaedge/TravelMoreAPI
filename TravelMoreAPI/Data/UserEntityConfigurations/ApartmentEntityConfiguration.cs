@@ -17,14 +17,18 @@ public class ApartmentEntityConfiguration : IEntityTypeConfiguration<Apartment>
             .IsRequired()
             .HasMaxLength(255);
 
+        builder.Property(u => u.ApartmentDescription)
+            .IsRequired()
+            .HasMaxLength(500);
+
         builder.Property(u => u.DistanceToCenter)
             .IsRequired();
 
         builder.Property(u => u.BedsNumber)
             .IsRequired();
 
-        //builder.Property(u => u.ImageBase64)
-           // .IsRequired();
+        //builder.Property(u => u.ApartmentPicture)
+            //.IsRequired();
 
     }
 }

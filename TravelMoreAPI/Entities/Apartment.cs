@@ -9,6 +9,7 @@ namespace TravelMoreAPI.Entities
         public string Address { get; set; }
         public int DistanceToCenter { get; set; }
         public int BedsNumber { get; set; }
+        public string? ApartmentDescription { get; set; }
         public byte[]? ApartmentPicture { get; set; }
     }
 }

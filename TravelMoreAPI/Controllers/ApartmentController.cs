@@ -41,7 +41,7 @@ namespace TravelMoreAPI.Controllers
             {
                 throw new Exception("User not found");
             }
-            
+
 
             var apartment = new Apartment()
             {
@@ -51,6 +51,7 @@ namespace TravelMoreAPI.Controllers
                 BedsNumber = apartmentDto.BedsNumber,
                 DistanceToCenter = apartmentDto.DistanceToCenter,
                 ApartmentPicture = apartmentDto.ApartmentPicture,
+                ApartmentDescription = apartmentDto.ApartmentDescription,
             };
             _apartmentRepository.AddApartment(apartment);
 

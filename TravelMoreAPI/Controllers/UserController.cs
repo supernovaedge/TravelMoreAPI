@@ -57,12 +57,12 @@ namespace TravelMoreAPI.Controllers
                 return BadRequest("Email already in use");
             }
 
-
+            */
             _userRepository.AddUser(user);
 
 
             return Ok("User Created");
-            */
+            
         }
          
 
