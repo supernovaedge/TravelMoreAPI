@@ -120,11 +120,13 @@ namespace TravelMoreAPI.Controllers
         public IActionResult Patch(Guid id,[FromBody] JsonPatchDocument<User> userEntity)
         {
 
-            var entity = _context.Users.FirstOrDefault(User => User.UserId == id);
+            var entity = _userRepository.GetUserById(id);
            
             if (entity == null) return NotFound("User not found");
 
             userEntity.ApplyTo(entity, ModelState);
+
+            _userRepository.SaveChanges(); 
 
             return Ok(entity);  
         }

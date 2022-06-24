@@ -31,11 +31,13 @@ namespace TravelMoreAPI.Repositories
         public Profile? GetUserProfileById(Guid id)
         {
             var user = _context.Users.FirstOrDefault(x => x.UserId == id);
+            if (user == null) throw new Exception("User not found");
 
             var userProfile = new Profile();
             userProfile.ApartmentId = user.ApartmentId;
             userProfile.UserName =  user.UserName;
             userProfile.Email = user.Email;
+            userProfile.UserPicture = user.UserPicture;
 
             return userProfile;
         }
