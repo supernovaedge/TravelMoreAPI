@@ -92,6 +92,16 @@ namespace TravelMoreAPI.Controllers
             return _userRepository.GetUsers();
         }
 
+        [HttpGet("GetUserProfile/{id:guid}")]
+        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUserProfileById(Guid id)
+        {
+            var profile = _userRepository.GetUserProfileById(id);
+
+            return profile == null ? NotFound() : Ok(profile);
+        }
+
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]

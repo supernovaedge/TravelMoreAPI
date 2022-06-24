@@ -28,6 +28,17 @@ namespace TravelMoreAPI.Repositories
             return _context.Users.Include(u => u.Apartment).FirstOrDefault(x => x.UserId == id);
         }
 
+        public Profile? GetUserProfileById(Guid id)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.UserId == id);
+
+            var userProfile = new Profile();
+            userProfile.ApartmentId = user.ApartmentId;
+            userProfile.UserName =  user.UserName;
+            userProfile.Email = user.Email;
+
+            return userProfile;
+        }
         public void SaveChanges()
         {
             _context.SaveChanges();

@@ -11,5 +11,7 @@ namespace TravelMoreAPI.Repositories
 
         bool EmailUniqueValidation(string email);
         bool UsernameUniqueValidation(string username);
+
+        Profile? GetUserProfileById(Guid id);
     }
 }
