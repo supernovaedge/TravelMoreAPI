@@ -10,6 +10,8 @@ namespace TravelMoreAPI.Entities
         public int DistanceToCenter { get; set; }
         public int BedsNumber { get; set; }
         public string? ApartmentDescription { get; set; }
+        public string? ApartmentCoordinates { get; set; }
         public byte[]? ApartmentPicture { get; set; }
+
     }
 }

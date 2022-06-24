@@ -48,7 +48,7 @@ namespace TravelMoreAPI.Repositories
 
         public IEnumerable<User> GetUsers()
         {
-            return _context.Users.Include(u => u.Apartment);
+            return _context.Users.Include(u => u.Apartment).Include(u => u.Guest);
         }
 
         public bool EmailUniqueValidation(string email)

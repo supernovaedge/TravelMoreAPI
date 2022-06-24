@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelMoreAPI.Data;
 
@@ -11,9 +12,10 @@ using TravelMoreAPI.Data;
 namespace TravelMoreAPI.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220624181316_apartmentCoordinates")]
+    partial class apartmentCoordinates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,9 +100,6 @@ namespace TravelMoreAPI.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<bool>("GuestStatus")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("HostFrom")
                         .HasColumnType("datetime2");
 
@@ -119,7 +118,7 @@ namespace TravelMoreAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Guests");
+                    b.ToTable("Guest");
                 });
 
             modelBuilder.Entity("TravelMoreAPI.Entities.User", b =>

@@ -62,6 +62,7 @@ namespace TravelMoreAPI.Controllers
                 DistanceToCenter = apartmentDto.DistanceToCenter,
                 ApartmentPicture = apartmentDto.ApartmentPicture,
                 ApartmentDescription = apartmentDto.ApartmentDescription,
+                ApartmentCoordinates = apartmentDto.ApartmentCoordinates,
             };
             _apartmentRepository.AddApartment(apartment);
 

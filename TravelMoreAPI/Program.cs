@@ -38,6 +38,7 @@ builder.Services.Configure<JwtTokenOptions>(builder.Configuration.GetSection("Jw
 builder.Services.AddDbContext<UserDbContext>(
     o => o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
+builder.Services.AddScoped<IGuestRepository, GuestRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
 builder.Services.AddScoped<ITokenCreationService, TokenCreationService>();

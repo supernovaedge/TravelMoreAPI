@@ -10,5 +10,6 @@ namespace TravelMoreAPI.Entities
         public DateTime HostFrom { get; set; }
         public DateTime HostTo { get; set; }  
         public Guid UserId { get; set; }
+        public bool GuestStatus { get; set; }
     }
 }

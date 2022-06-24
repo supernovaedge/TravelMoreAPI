@@ -95,7 +95,7 @@ namespace TravelMoreAPI.Controllers
         [HttpGet("GetUserProfile/{id:guid}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetUserProfileById(Guid id)
+        public IActionResult GetUserProfileById(Guid id)
         {
             var profile = _userRepository.GetUserProfileById(id);
 
@@ -137,7 +137,7 @@ namespace TravelMoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update (Guid id, User user)
         {
-            if (id != user.UserId) return BadRequest();
+            if (id != user.UserId) return BadRequest("Bad Request");
 
             _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -152,7 +152,7 @@ namespace TravelMoreAPI.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var userToDelete = _userRepository.GetUserById(id);
-            if (userToDelete == null) return NotFound();
+            if (userToDelete == null) return NotFound("User not found");
 
             _context.Users.Remove(userToDelete);
             await _context.SaveChangesAsync();

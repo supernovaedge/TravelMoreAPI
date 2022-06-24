@@ -11,6 +11,7 @@ namespace TravelMoreAPI.Data
 
         }
 
+        public DbSet<Guest> Guests { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<User> Users { get; set; }
 
