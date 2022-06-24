@@ -28,6 +28,16 @@ namespace TravelMoreAPI.Controllers
             return _apartmentRepository.GetApartments();
         }
 
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Apartment), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetById(Guid id)
+        {
+            var apartment = _apartmentRepository.GetApartmentById(id);
+
+            return apartment == null ? NotFound() : Ok(apartment);
+        }
+
 
         [HttpPost("AddApartment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -60,6 +70,28 @@ namespace TravelMoreAPI.Controllers
             _userRepository.SaveChanges();
 
             return Ok(apartment);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Delete(Guid id)
+        {
+            var entity = _userRepository.GetUserById(id);
+            if (entity == null)
+            {
+                return NotFound("User not found");
+            }
+            
+            if(entity.Apartment == null)
+            {
+                return NotFound("User has no apartment");
+            }
+            
+            _apartmentRepository.DeleteApartment(entity.Apartment);
+            entity.ApartmentId = null;
+
+            return Ok("Apartment removed");
         }
     }
 }

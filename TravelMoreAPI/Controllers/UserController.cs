@@ -139,7 +139,7 @@ namespace TravelMoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var userToDelete = await _context.Users.FindAsync(id);
+            var userToDelete = _userRepository.GetUserById(id);
             if (userToDelete == null) return NotFound();
 
             _context.Users.Remove(userToDelete);

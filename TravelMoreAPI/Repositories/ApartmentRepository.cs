@@ -33,5 +33,11 @@ namespace TravelMoreAPI.Repositories
         {
             _context.SaveChanges();
         }
+
+        public void DeleteApartment(Apartment apartment)
+        {
+            _context.Apartments.Remove(apartment);
+            SaveChanges();
+        }
     }
 }

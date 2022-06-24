@@ -10,5 +10,7 @@ namespace TravelMoreAPI.Repositories
         void AddApartment(Apartment apartment);
 
         void SaveChanges();
+
+        void DeleteApartment(Apartment apartment);
     }
 }
