@@ -46,22 +46,25 @@ namespace TravelMoreAPI.Controllers
                 UserPicture = userDto.UserPicture,
             };
 
-            if (_userRepository.EmailValidation(userDto.Email))
+            /*
+            if (_userRepository.UsernameUniqueValidation(user.UserName))
+            {
+                return BadRequest("Username already in use");
+            }
+
+            if (_userRepository.EmailUniqueValidation(user.Email))
             {
                 return BadRequest("Email already in use");
             }
 
-            if (_userRepository.UsernameValidation(userDto.UserName))
-            {
-                return BadRequest("Username already in use");
-            }
 
             _userRepository.AddUser(user);
 
 
             return Ok("User Created");
+            */
         }
-
+         
 
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(UserLoginDto request)

@@ -38,23 +38,18 @@ namespace TravelMoreAPI.Repositories
             return _context.Users.Include(u => u.Apartment);
         }
 
-        public bool EmailValidation(string email)
+        public bool EmailUniqueValidation(string email)
         {
             var user = _context.Users.FirstOrDefault(m => m.Email == email);
-            if (email == null)
-            {
-                return false;
-            }
-            return true;
+            
+            return (email != null);
         }
 
-        public bool UsernameValidation(string username)
+        public bool UsernameUniqueValidation(string username)
         {
-            if (_context.Users.FirstOrDefault(x => x.Email == username) == null)
-            {
-                return false;
-            }
-            return true;
+            var user = _context.Users.FirstOrDefault(m => m.UserName == username);
+
+            return (username != null);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TravelMoreAPI.Repositories
         void AddUser(User user);
         void SaveChanges();
 
-        bool EmailValidation(string email);
-        bool UsernameValidation(string username);
+        bool EmailUniqueValidation(string email);
+        bool UsernameUniqueValidation(string username);
     }
 }
