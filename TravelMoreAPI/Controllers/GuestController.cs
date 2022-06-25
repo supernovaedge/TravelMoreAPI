@@ -14,11 +14,13 @@ namespace TravelMoreAPI.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IGuestRepository _guestRepository;
+        private readonly IBookingRepository _bookingRepository;
 
-        public GuestController(IGuestRepository guestRepository, IUserRepository userRepository)
+        public GuestController(IGuestRepository guestRepository, IUserRepository userRepository, IBookingRepository bookingRepository)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _guestRepository = guestRepository ?? throw new ArgumentNullException(nameof(guestRepository));
+            _bookingRepository = bookingRepository ?? throw new ArgumentNullException(nameof(bookingRepository));
         }
 
         [HttpGet]
@@ -52,6 +54,7 @@ namespace TravelMoreAPI.Controllers
             var guest = new Guest()
             {
                 GuestId = Guid.NewGuid(),
+                ApartmentID = guestDto.ApartmentId,
                 FirstName = guestDto.FirstName,
                 LastName = guestDto.LastName,
                 HostFrom = guestDto.HostFrom,

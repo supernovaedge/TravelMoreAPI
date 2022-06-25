@@ -6,12 +6,10 @@ namespace TravelMoreAPI.Repositories
     {
         IEnumerable<User> GetUsers();
         User? GetUserById(Guid id);
+        User? GetUserByEmail(string email);
+        User? GetUserByUsername(string userName);
         void AddUser(User user);
         void SaveChanges();
-
-        bool EmailUniqueValidation(string email);
-        bool UsernameUniqueValidation(string username);
-
         Profile? GetUserProfileById(Guid id);
     }
 }

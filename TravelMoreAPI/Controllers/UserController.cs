@@ -46,18 +46,22 @@ namespace TravelMoreAPI.Controllers
                 UserPicture = userDto.UserPicture,
             };
 
-            /*
-            if (_userRepository.UsernameUniqueValidation(user.UserName))
+            var usernameOwner = _userRepository.GetUserByUsername(userDto.UserName);
+            if (usernameOwner != null)
             {
                 return BadRequest("Username already in use");
             }
 
-            if (_userRepository.EmailUniqueValidation(user.Email))
+            var emailOwner = _userRepository.GetUserByEmail(userDto.Email);
+            if (emailOwner != null)
             {
                 return BadRequest("Email already in use");
             }
 
-            */
+
+
+
+
             _userRepository.AddUser(user);
 
 

@@ -51,19 +51,17 @@ namespace TravelMoreAPI.Repositories
             return _context.Users.Include(u => u.Apartment).Include(u => u.Guest);
         }
 
-        public bool EmailUniqueValidation(string email)
+
+        public User? GetUserByEmail(string email)
         {
-            var user = _context.Users.FirstOrDefault(m => m.Email == email);
-            
-            return (email != null);
+            return _context.Users.FirstOrDefault(x => x.Email == email);
         }
 
-        public bool UsernameUniqueValidation(string username)
+        public User? GetUserByUsername(string userName)
         {
-            var user = _context.Users.FirstOrDefault(m => m.UserName == username);
-
-            return (username != null);
+            return _context.Users.FirstOrDefault(x => x.UserName == userName);
         }
+
     }
 }
 
