@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelMoreAPI.Data;
 
@@ -11,9 +12,10 @@ using TravelMoreAPI.Data;
 namespace TravelMoreAPI.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220626171107_addedBookingStatus")]
+    partial class addedBookingStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,16 +65,13 @@ namespace TravelMoreAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BookingId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<bool>("BookingStatus")
+                        .HasColumnType("bit");
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("CurrentStatus")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("StayFrom")
                         .HasColumnType("datetime2");
@@ -99,20 +98,17 @@ namespace TravelMoreAPI.Migrations
                     b.Property<Guid>("ApartmentID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BookingId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CurrentStatus")
-                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("GuestStatus")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("HostFrom")
                         .HasColumnType("datetime2");

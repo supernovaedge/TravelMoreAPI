@@ -9,7 +9,7 @@ namespace TravelMoreAPI.Entities
         public string LastName { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
-        public byte[]? UserPicture { get; set; }
+        public ImageBase64 UserPicture { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public Guid? ApartmentId { get; set; }

@@ -9,7 +9,8 @@
         public int DistanceToCenter { get; set; } = 0;
         public int BedsNumber { get; set; } = 0;
         public string ApartmentDescription { get; set; } = string.Empty;
-        public byte[] ApartmentPicture { get; set; } = new byte[0];
+        public byte[] ApartmentPictureBase64 { get; set; } = new byte[0];
+        public string ApartmentPictureHeader { get; set; } = string.Empty;
 
     }
 }

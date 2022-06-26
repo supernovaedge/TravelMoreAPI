@@ -11,7 +11,7 @@ namespace TravelMoreAPI.Entities
         public int BedsNumber { get; set; }
         public string? ApartmentDescription { get; set; }
         public string? ApartmentCoordinates { get; set; }
-        public byte[]? ApartmentPicture { get; set; }
+        public ImageBase64? ApartmentPicture { get; set; }
 
     }
 }

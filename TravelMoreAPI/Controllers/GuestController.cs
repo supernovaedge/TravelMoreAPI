@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TravelMoreAPI.Entities;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Repositories;
@@ -47,11 +48,15 @@ namespace TravelMoreAPI.Controllers
             var entity = _userRepository.GetUserByApartmentID(guestDto.ApartmentId);
             if (entity == null)
             {
-                throw new Exception("User not found");
+                return BadRequest("Apartment not found");
             }
-
+            if(entity.UserId == guestDto.GuestId)
+            {
+                return BadRequest("Can't book your own Apartment");
+            }
             var guest = new Guest()
             {
+                BookingId = new Guid(),
                 GuestId = guestDto.GuestId,
                 ApartmentID = guestDto.ApartmentId,
                 FirstName = guestDto.FirstName,
@@ -59,7 +64,7 @@ namespace TravelMoreAPI.Controllers
                 City = guestDto.City,
                 HostFrom = guestDto.HostFrom,
                 HostTo = guestDto.HostTo,
-                GuestStatus = false,
+                CurrentStatus = Entities.Helpers.GuestStatus.GuestStatusEnum.pending,
                 UserId = entity.UserId,
             };
             var booking = _bookingRepository.GuestToBooking(guest);

@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
                               policy.WithOrigins("http://localhost:3000",
                                                   "http://localhost:3000/auth/register")
                                                   .AllowAnyHeader()
-                                                  .AllowAnyMethod();
+                                                  .AllowAnyMethod();                                               
                           });
 });
 

@@ -41,7 +41,7 @@ namespace TravelMoreAPI.Controllers
 
         [HttpPost("AddApartment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<User> Create(ApartmentDto apartmentDto)
+        public ActionResult<Apartment> Create(ApartmentDto apartmentDto)
         {
      
             var userId = apartmentDto.UserID;
@@ -49,7 +49,7 @@ namespace TravelMoreAPI.Controllers
             var entity = _userRepository.GetUserById(userId);
             if(entity == null)
             {
-                throw new Exception("User not found");
+                return NotFound("User not found");
             }
 
 
@@ -60,7 +60,7 @@ namespace TravelMoreAPI.Controllers
                 Address = apartmentDto.Address,
                 BedsNumber = apartmentDto.BedsNumber,
                 DistanceToCenter = apartmentDto.DistanceToCenter,
-                ApartmentPicture = apartmentDto.ApartmentPicture,
+                ApartmentPicture = new ImageBase64 {Picture = apartmentDto.ApartmentPictureBase64, Header = apartmentDto.ApartmentPictureHeader},
                 ApartmentDescription = apartmentDto.ApartmentDescription,
                 ApartmentCoordinates = apartmentDto.ApartmentCoordinates,
             };

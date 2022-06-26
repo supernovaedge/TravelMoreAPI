@@ -43,7 +43,7 @@ namespace TravelMoreAPI.Controllers
                 Email = userDto.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                UserPicture = userDto.UserPicture,
+                UserPicture = new ImageBase64 { Picture = userDto.UserPictureBase64, Header = userDto.UserPictureHeader }
             };
 
             var usernameOwner = _userRepository.GetUserByUsername(userDto.UserName);
@@ -57,9 +57,6 @@ namespace TravelMoreAPI.Controllers
             {
                 return BadRequest("Email already in use");
             }
-
-
-
 
 
             _userRepository.AddUser(user);
@@ -86,6 +83,60 @@ namespace TravelMoreAPI.Controllers
             string token = _tokenCreationService.CreateToken(user);
 
             return Ok(token);
+        }
+
+        [HttpPost("ChangeEmail")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult<User> ChangeEmail(EmailDto emailDto)
+        {
+
+            var entity = _userRepository.GetUserById(emailDto.UserId);
+            if (entity == null)
+            {
+                return BadRequest("User not found");
+            }
+
+
+            var emailOwner = _userRepository.GetUserByEmail(emailDto.NewEmail);
+            if (emailOwner != null)
+            {
+                return BadRequest("Email already in use");
+            }
+
+
+            entity.Email = emailDto.NewEmail;
+
+            _userRepository.SaveChanges();
+
+            return Ok("Email changed Sucessfully");
+        }
+
+        [HttpPost("ChangePassword")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult<User> ChangePassword(PasswordDto passwordDto)
+        {
+
+            var entity = _userRepository.GetUserById(passwordDto.UserId);
+            if (entity == null)
+            {
+                return BadRequest("User not found");
+            }
+
+
+            if (!PasswordProcessing.VerifyPasswordHash(passwordDto.CurrentPassword, entity.PasswordHash, entity.PasswordSalt))
+            {
+                return BadRequest("Wrong Password");
+            }
+
+
+            PasswordProcessing.CreatePasswordHash(passwordDto.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+            entity.PasswordHash = passwordHash;
+            entity.PasswordSalt = passwordSalt;
+            
+            _userRepository.SaveChanges();
+
+            return Ok("Password changed Sucessfully");
         }
 
 
