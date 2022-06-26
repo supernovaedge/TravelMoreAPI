@@ -30,7 +30,7 @@ namespace TravelMoreAPI.Repositories
 
         public Profile? GetUserProfileById(Guid id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.UserId == id);
+            var user = _context.Users.Include(x => x.UserPicture).FirstOrDefault(x => x.UserId == id);
             if (user == null) throw new Exception("User not found");
 
             var userProfile = new Profile();

@@ -30,7 +30,7 @@ namespace TravelMoreAPI
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(15),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);

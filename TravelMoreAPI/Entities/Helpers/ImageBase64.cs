@@ -1,13 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿
+using System.ComponentModel.DataAnnotations;
+
 
 namespace TravelMoreAPI.Entities
 {
-    [Keyless]
-    [NotMapped]
+
     public class ImageBase64
     {
-        public byte[] Picture;
-        public string Header;
+        [Key]
+        public Guid UserId { get; set; }
+        public byte[] UserPicture { get; set; }
+        public string UserHeader { get; set; }
+
+        public byte[]? ApartmentPicture { get; set; }
+        public string? ApartmentHeader { get; set; }
     }
 }

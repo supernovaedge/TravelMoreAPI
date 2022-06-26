@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelMoreAPI.Data;
 
@@ -11,9 +12,10 @@ using TravelMoreAPI.Data;
 namespace TravelMoreAPI.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220626222620_picturesMapped3")]
+    partial class picturesMapped3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,17 +147,11 @@ namespace TravelMoreAPI.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApartmentHeader")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("ApartmentPicture")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("UserHeader")
+                    b.Property<string>("Header")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("UserPicture")
+                    b.Property<byte[]>("Picture")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 

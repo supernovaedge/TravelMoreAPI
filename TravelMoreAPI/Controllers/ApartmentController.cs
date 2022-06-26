@@ -60,12 +60,13 @@ namespace TravelMoreAPI.Controllers
                 Address = apartmentDto.Address,
                 BedsNumber = apartmentDto.BedsNumber,
                 DistanceToCenter = apartmentDto.DistanceToCenter,
-                ApartmentPicture = new ImageBase64 {Picture = apartmentDto.ApartmentPictureBase64, Header = apartmentDto.ApartmentPictureHeader},
                 ApartmentDescription = apartmentDto.ApartmentDescription,
                 ApartmentCoordinates = apartmentDto.ApartmentCoordinates,
             };
             _apartmentRepository.AddApartment(apartment);
 
+            entity.UserPicture.ApartmentPicture = apartmentDto.ApartmentPictureBase64;
+            entity.UserPicture.ApartmentHeader = apartmentDto.ApartmentPictureHeader;
             entity.ApartmentId = apartment.ApartmentId;
 
             _userRepository.SaveChanges();

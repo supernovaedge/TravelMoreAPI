@@ -33,17 +33,17 @@ namespace TravelMoreAPI.Controllers
         {
             PasswordProcessing.CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-
+            var newGuid = new Guid();
             var user = new User()
             {
-                UserId = new Guid(),
+                UserId = newGuid,
                 UserName = userDto.UserName,
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
                 Email = userDto.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                UserPicture = new ImageBase64 { Picture = userDto.UserPictureBase64, Header = userDto.UserPictureHeader }
+                UserPicture = new ImageBase64 {UserId = newGuid, UserPicture = userDto.UserPictureBase64, UserHeader = userDto.UserPictureHeader }
             };
 
             var usernameOwner = _userRepository.GetUserByUsername(userDto.UserName);
@@ -183,7 +183,7 @@ namespace TravelMoreAPI.Controllers
 
             _userRepository.SaveChanges(); 
 
-            return Ok(entity);  
+            return Ok("Change was Sucessful");  
         }
 
 

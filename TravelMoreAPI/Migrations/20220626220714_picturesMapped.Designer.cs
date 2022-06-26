@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelMoreAPI.Data;
 
@@ -11,9 +12,10 @@ using TravelMoreAPI.Data;
 namespace TravelMoreAPI.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220626220714_picturesMapped")]
+    partial class picturesMapped
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,9 +43,6 @@ namespace TravelMoreAPI.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<Guid?>("ApartmentPictureUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("BedsNumber")
                         .HasColumnType("int");
 
@@ -56,8 +55,6 @@ namespace TravelMoreAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ApartmentId");
-
-                    b.HasIndex("ApartmentPictureUserId");
 
                     b.ToTable("Apartments");
                 });
@@ -140,30 +137,6 @@ namespace TravelMoreAPI.Migrations
                     b.ToTable("Guests");
                 });
 
-            modelBuilder.Entity("TravelMoreAPI.Entities.ImageBase64", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ApartmentHeader")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("ApartmentPicture")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("UserHeader")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("UserPicture")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("ImageBase64");
-                });
-
             modelBuilder.Entity("TravelMoreAPI.Entities.User", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -211,15 +184,6 @@ namespace TravelMoreAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TravelMoreAPI.Entities.Apartment", b =>
-                {
-                    b.HasOne("TravelMoreAPI.Entities.ImageBase64", "ApartmentPicture")
-                        .WithMany()
-                        .HasForeignKey("ApartmentPictureUserId");
-
-                    b.Navigation("ApartmentPicture");
-                });
-
             modelBuilder.Entity("TravelMoreAPI.Entities.Booking", b =>
                 {
                     b.HasOne("TravelMoreAPI.Entities.User", null)
@@ -238,15 +202,6 @@ namespace TravelMoreAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TravelMoreAPI.Entities.ImageBase64", b =>
-                {
-                    b.HasOne("TravelMoreAPI.Entities.User", null)
-                        .WithOne("UserPicture")
-                        .HasForeignKey("TravelMoreAPI.Entities.ImageBase64", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TravelMoreAPI.Entities.User", b =>
                 {
                     b.HasOne("TravelMoreAPI.Entities.Apartment", "Apartment")
@@ -261,9 +216,6 @@ namespace TravelMoreAPI.Migrations
                     b.Navigation("Booking");
 
                     b.Navigation("Guest");
-
-                    b.Navigation("UserPicture")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
