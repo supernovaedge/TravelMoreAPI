@@ -40,6 +40,7 @@ builder.Services.AddDbContext<UserDbContext>(
 
 builder.Services.AddScoped<IGuestRepository, GuestRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
 builder.Services.AddScoped<ITokenCreationService, TokenCreationService>();
 

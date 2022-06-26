@@ -44,8 +44,7 @@ namespace TravelMoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<Guest> Create(GuestDto guestDto)
         {
-
-            var entity = _userRepository.GetUserById(guestDto.UserId);
+            var entity = _userRepository.GetUserByApartmentID(guestDto.ApartmentId);
             if (entity == null)
             {
                 throw new Exception("User not found");
@@ -53,18 +52,22 @@ namespace TravelMoreAPI.Controllers
 
             var guest = new Guest()
             {
-                GuestId = Guid.NewGuid(),
+                GuestId = guestDto.GuestId,
                 ApartmentID = guestDto.ApartmentId,
                 FirstName = guestDto.FirstName,
                 LastName = guestDto.LastName,
+                City = guestDto.City,
                 HostFrom = guestDto.HostFrom,
                 HostTo = guestDto.HostTo,
                 GuestStatus = false,
-                UserId = guestDto.UserId,
+                UserId = entity.UserId,
             };
+            var booking = _bookingRepository.GuestToBooking(guest);
+            _bookingRepository.AddBooking(booking);
             _guestRepository.AddGuest(guest);
 
             _guestRepository.SaveChanges();
+            _bookingRepository.SaveChanges();
 
             return Ok("Stay requested");
         }

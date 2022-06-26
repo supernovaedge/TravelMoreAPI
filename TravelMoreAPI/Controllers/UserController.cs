@@ -65,7 +65,7 @@ namespace TravelMoreAPI.Controllers
             _userRepository.AddUser(user);
 
 
-            return Ok("User Created");
+            return Ok(user);
             
         }
          

@@ -50,7 +50,11 @@ namespace TravelMoreAPI.Repositories
         {
             var booking = new Booking()
             {
-            
+            City = guest.City,
+            StayFrom = guest.HostFrom,
+            StayTo = guest.HostTo,
+            UserId = guest.GuestId,
+            ApartmentId = guest.ApartmentID,
             };
             return booking;
         }
