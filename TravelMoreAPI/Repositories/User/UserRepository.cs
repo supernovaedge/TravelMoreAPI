@@ -25,7 +25,7 @@ namespace TravelMoreAPI.Repositories
 
         public User? GetUserById(Guid id)
         {
-            return _context.Users.Include(u => u.Apartment).FirstOrDefault(x => x.UserId == id);
+            return _context.Users.Include(u => u.UserPicture).Include(u => u.Apartment).FirstOrDefault(x => x.UserId == id);
         }
 
         public Profile? GetUserProfileById(Guid id)
