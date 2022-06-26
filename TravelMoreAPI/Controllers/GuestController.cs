@@ -56,7 +56,7 @@ namespace TravelMoreAPI.Controllers
             }
             var guest = new Guest()
             {
-                BookingId = new Guid(),
+                BookingId = Guid.NewGuid(),
                 GuestId = guestDto.GuestId,
                 ApartmentID = guestDto.ApartmentId,
                 FirstName = guestDto.FirstName,

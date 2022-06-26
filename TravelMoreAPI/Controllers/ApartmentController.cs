@@ -52,21 +52,20 @@ namespace TravelMoreAPI.Controllers
                 return NotFound("User not found");
             }
 
-
+            var newGuid = Guid.NewGuid();
             var apartment = new Apartment()
             {
-                ApartmentId = new Guid(),
+                ApartmentId = newGuid,
                 City = apartmentDto.City,
                 Address = apartmentDto.Address,
                 BedsNumber = apartmentDto.BedsNumber,
                 DistanceToCenter = apartmentDto.DistanceToCenter,
                 ApartmentDescription = apartmentDto.ApartmentDescription,
                 ApartmentCoordinates = apartmentDto.ApartmentCoordinates,
+                ApartmentPicture = {ApartmentId = newGuid ,ApartmentPicture = apartmentDto.ApartmentPictureBase64,ApartmentHeader = apartmentDto.ApartmentPictureHeader}
             };
             _apartmentRepository.AddApartment(apartment);
 
-            entity.UserPicture.ApartmentPicture = apartmentDto.ApartmentPictureBase64;
-            entity.UserPicture.ApartmentHeader = apartmentDto.ApartmentPictureHeader;
             entity.ApartmentId = apartment.ApartmentId;
 
             _userRepository.SaveChanges();

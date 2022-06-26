@@ -5,6 +5,6 @@
         public string? UserName;
         public string? Email;
         public Guid? ApartmentId;
-        public ImageBase64? UserPicture;
+        public UserPicture64? UserPicture;
     }
 }

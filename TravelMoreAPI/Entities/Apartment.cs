@@ -1,5 +1,7 @@
 ﻿
 
+using TravelMoreAPI.Entities.Helpers;
+
 namespace TravelMoreAPI.Entities
 {
     public class Apartment 
@@ -11,7 +13,7 @@ namespace TravelMoreAPI.Entities
         public int BedsNumber { get; set; }
         public string? ApartmentDescription { get; set; }
         public string? ApartmentCoordinates { get; set; }
-        public ImageBase64? ApartmentPicture { get; set; }
+        public ApartmentPicture64 ApartmentPicture { get; set; }
 
     }
 }

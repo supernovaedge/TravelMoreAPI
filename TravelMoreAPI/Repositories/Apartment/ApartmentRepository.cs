@@ -1,4 +1,5 @@
-﻿using TravelMoreAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
 
 namespace TravelMoreAPI.Repositories
@@ -16,7 +17,7 @@ namespace TravelMoreAPI.Repositories
 
         public Apartment? GetApartmentById(Guid id)
         {
-            return _context.Apartments.FirstOrDefault(x => x.ApartmentId == id);
+            return _context.Apartments.Include(u => u.ApartmentPicture).FirstOrDefault(x => x.ApartmentId == id);
         }
 
         public IEnumerable<Apartment> GetApartments()
