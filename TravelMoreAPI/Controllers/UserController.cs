@@ -111,6 +111,34 @@ namespace TravelMoreAPI.Controllers
             return Ok("Email changed Sucessfully");
         }
 
+
+        [HttpPost("ChangeUserName")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult<User> ChangeUserName(UserNameDto userNameDto)
+        {
+
+            var entity = _userRepository.GetUserById(userNameDto.UserId);
+            if (entity == null)
+            {
+                return BadRequest("User not found");
+            }
+
+
+            var userNameOwner = _userRepository.GetUserByUsername(userNameDto.NewUserName);
+            if (userNameOwner != null)
+            {
+                return BadRequest("UserName already in use");
+            }
+
+
+            entity.UserName = userNameDto.NewUserName;
+
+            _userRepository.SaveChanges();
+
+            return Ok("UserName changed Sucessfully");
+        }
+
+
         [HttpPost("ChangePassword")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> ChangePassword(PasswordDto passwordDto)
@@ -121,13 +149,6 @@ namespace TravelMoreAPI.Controllers
             {
                 return BadRequest("User not found");
             }
-
-
-            if (!PasswordProcessing.VerifyPasswordHash(passwordDto.CurrentPassword, entity.PasswordHash, entity.PasswordSalt))
-            {
-                return BadRequest("Wrong Password");
-            }
-
 
             PasswordProcessing.CreatePasswordHash(passwordDto.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
