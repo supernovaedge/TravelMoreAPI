@@ -7,7 +7,7 @@ public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
 {
     public void Configure(EntityTypeBuilder<Booking> builder)
     {
-        builder.HasKey(u => u.ApartmentId);
+        builder.HasKey(u => u.BookingId);
 
         builder.Property(u => u.City)
             .IsRequired()

@@ -7,7 +7,7 @@ public class GuestEntityConfiguration : IEntityTypeConfiguration<Guest>
 {
     public void Configure(EntityTypeBuilder<Guest> builder)
     {
-        builder.HasKey(u => u.GuestId);
+        builder.HasKey(u => u.BookingId);
 
         builder.Property(u => u.FirstName)
             .IsRequired()

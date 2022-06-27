@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -37,10 +38,10 @@ namespace TravelMoreAPI.Controllers
             var user = new User()
             {
                 UserId = newGuid,
-                UserName = userDto.UserName,
+                UserName = userDto.UserName.ToLower(),
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
-                Email = userDto.Email,
+                Email = userDto.Email.ToLower(),
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 UserPicture = new UserPicture64 {UserId = newGuid, UserPicture = userDto.UserPictureBase64, UserHeader = userDto.UserPictureHeader }
@@ -70,7 +71,7 @@ namespace TravelMoreAPI.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(UserLoginDto request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.UserName == request.UserName);
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.UserName == request.UserName.ToLower());
             if (user == null)
             {
                 return BadRequest("UserName not found");
@@ -97,14 +98,14 @@ namespace TravelMoreAPI.Controllers
             }
 
 
-            var emailOwner = _userRepository.GetUserByEmail(emailDto.NewEmail);
+            var emailOwner = _userRepository.GetUserByEmail(emailDto.NewEmail.ToLower());
             if (emailOwner != null)
             {
                 return BadRequest("Email already in use");
             }
 
 
-            entity.Email = emailDto.NewEmail;
+            entity.Email = emailDto.NewEmail.ToLower();
 
             _userRepository.SaveChanges();
 
@@ -124,14 +125,14 @@ namespace TravelMoreAPI.Controllers
             }
 
 
-            var userNameOwner = _userRepository.GetUserByUsername(userNameDto.NewUserName);
+            var userNameOwner = _userRepository.GetUserByUsername(userNameDto.NewUserName.ToLower());
             if (userNameOwner != null)
             {
                 return BadRequest("UserName already in use");
             }
 
 
-            entity.UserName = userNameDto.NewUserName;
+            entity.UserName = userNameDto.NewUserName.ToLower();
 
             _userRepository.SaveChanges();
 
@@ -168,6 +169,7 @@ namespace TravelMoreAPI.Controllers
             return _userRepository.GetUsers();
         }
 
+       // [Authorize]
         [HttpGet("GetUserProfile/{id:guid}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

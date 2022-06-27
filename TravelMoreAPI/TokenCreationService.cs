@@ -16,11 +16,13 @@ namespace TravelMoreAPI
              _jwtOptions = jwtOptions.Value;
         }
 
+
+
         public string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim("UserId", user.UserId.ToString())
+                new Claim("UserId", user.UserId.ToString()),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
