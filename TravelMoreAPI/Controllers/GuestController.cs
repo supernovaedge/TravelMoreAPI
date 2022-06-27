@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using TravelMoreAPI.Entities;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Repositories;

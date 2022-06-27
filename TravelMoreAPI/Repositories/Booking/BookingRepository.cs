@@ -19,6 +19,16 @@ namespace TravelMoreAPI.Repositories
             _context.Bookings.Add(booking);
         }
 
+        public Booking GetBookingByApartmentId(Guid id)
+        {
+            var booking = _context.Bookings.FirstOrDefault(x => x.ApartmentId == id);
+            if(booking == null)
+            {
+                throw new Exception("booking null");
+            }
+            _context.Bookings.Remove(booking);
+            return booking;
+        }
         public IEnumerable<Booking> GetApartments()
         {
             return _context.Bookings;

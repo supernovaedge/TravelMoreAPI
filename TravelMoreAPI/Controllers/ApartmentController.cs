@@ -15,11 +15,15 @@ namespace TravelMoreAPI.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IApartmentRepository _apartmentRepository;
+        private readonly IGuestRepository _guestRepository;
+        private readonly IBookingRepository _bookingRepository;
 
-        public ApartmentController(IApartmentRepository apartmentRepository, IUserRepository userRepository)
+        public ApartmentController(IApartmentRepository apartmentRepository, IUserRepository userRepository, IBookingRepository bookingRepository,IGuestRepository guestRepository)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _apartmentRepository = apartmentRepository ?? throw new ArgumentNullException(nameof(apartmentRepository));
+            _guestRepository = guestRepository ?? throw new ArgumentNullException(nameof(guestRepository));
+            _bookingRepository = bookingRepository ?? throw new ArgumentNullException(nameof(bookingRepository));
         }
 
 
@@ -89,10 +93,20 @@ namespace TravelMoreAPI.Controllers
             {
                 return NotFound("User has no apartment");
             }
+
+            var guestToRemove = _guestRepository.GetGuestsById(id);
+            foreach (var guestEntity in guestToRemove)
+            {
+                _userRepository.DeleteGuest(guestEntity);
+                _bookingRepository.GetBookingByApartmentId(guestEntity.ApartmentID).CurrentStatus = GuestStatus.GuestStatusEnum.denied;
+            }
+                
+
             
             _apartmentRepository.DeleteApartment(entity.Apartment);
             entity.ApartmentId = null;
-
+            _bookingRepository.SaveChanges();
+            _guestRepository.SaveChanges();
             return Ok("Apartment removed");
         }
     }

@@ -66,6 +66,11 @@ namespace TravelMoreAPI.Repositories
         {
             return _context.Users.FirstOrDefault(x => x.ApartmentId == apartmentID);
         }
+
+        public void DeleteGuest(Guest guestToRemove)
+        {
+            _context.Guests.Remove(guestToRemove);
+        }
     }
 }
 

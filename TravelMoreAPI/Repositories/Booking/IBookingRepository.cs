@@ -9,6 +9,8 @@ namespace TravelMoreAPI.Repositories
 
         void AddBooking(Booking booking);
 
+        Booking GetBookingByApartmentId(Guid id);
+
         void SaveChanges();
 
         Booking GuestToBooking(Guest guest);

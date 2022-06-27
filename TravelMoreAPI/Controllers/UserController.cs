@@ -21,11 +21,20 @@ namespace TravelMoreAPI.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ITokenCreationService _tokenCreationService;
 
+
         public UserController(UserDbContext context, IUserRepository repository, ITokenCreationService tokenCreationService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             _tokenCreationService = tokenCreationService ?? throw new ArgumentNullException(nameof(tokenCreationService));
+            
+        }
+
+        [Authorize]
+        [HttpGet("void")]
+        public string returnString()
+        {
+            return "this is test";
         }
 
         [HttpPost("Register")]
@@ -169,7 +178,7 @@ namespace TravelMoreAPI.Controllers
             return _userRepository.GetUsers();
         }
 
-       // [Authorize]
+        //[Authorize]
         [HttpGet("GetUserProfile/{id:guid}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
