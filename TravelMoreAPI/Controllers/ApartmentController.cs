@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TravelMoreAPI.Entities;
+using TravelMoreAPI.Entities.Helpers;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Repositories;
 
@@ -62,7 +63,7 @@ namespace TravelMoreAPI.Controllers
                 DistanceToCenter = apartmentDto.DistanceToCenter,
                 ApartmentDescription = apartmentDto.ApartmentDescription,
                 ApartmentCoordinates = apartmentDto.ApartmentCoordinates,
-                ApartmentPicture = {ApartmentId = newGuid ,ApartmentPicture = apartmentDto.ApartmentPictureBase64,ApartmentHeader = apartmentDto.ApartmentPictureHeader}
+                ApartmentPicture = new ApartmentPicture64{ApartmentId = newGuid ,ApartmentPicture = apartmentDto.ApartmentPictureBase64,ApartmentHeader = apartmentDto.ApartmentPictureHeader}
             };
             _apartmentRepository.AddApartment(apartment);
 
