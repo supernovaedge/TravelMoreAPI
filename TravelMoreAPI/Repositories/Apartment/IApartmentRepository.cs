@@ -4,7 +4,7 @@ namespace TravelMoreAPI.Repositories
 {
     public interface IApartmentRepository
     {
-        IEnumerable<Apartment> GetApartments();
+        IEnumerable<Apartment> GetApartments(int n);
         Apartment? GetApartmentById(Guid id);
 
         void AddApartment(Apartment apartment);

@@ -20,9 +20,9 @@ namespace TravelMoreAPI.Repositories
             return _context.Apartments.Include(u => u.ApartmentPicture).FirstOrDefault(x => x.ApartmentId == id);
         }
 
-        public IEnumerable<Apartment> GetApartments()
+        public IEnumerable<Apartment> GetApartments(int n)
         {
-            return _context.Apartments.Include(x => x.ApartmentPicture).Take(10);
+            return _context.Apartments.Include(x => x.ApartmentPicture).Take(n);
         }
 
         public void AddApartment(Apartment apartment)

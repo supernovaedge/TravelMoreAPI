@@ -28,9 +28,9 @@ namespace TravelMoreAPI.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<Apartment>> Get()
+        public IEnumerable<Apartment> Get(int n)
         {
-            return _apartmentRepository.GetApartments();
+            return _apartmentRepository.GetApartments(n);
         }
 
         //[Authorize]
