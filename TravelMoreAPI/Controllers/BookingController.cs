@@ -5,6 +5,7 @@ using TravelMoreAPI.Entities;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Repositories;
 using TravelMoreAPI.Repositories.BookingT;
+using static TravelMoreAPI.Entities.Helpers.GuestStatus;
 
 namespace TravelMoreAPI.Controllers
 {
@@ -74,6 +75,17 @@ namespace TravelMoreAPI.Controllers
             var booking = _bookingRepository.GetGuestProfile(id);
 
             return booking == null ? NotFound() : Ok(booking);
+        }
+
+        [HttpPost("GuestStatus/{id:guid}")]
+        public IActionResult SetBookingStatus(Guid id,int i)
+        {
+            var booking = _bookingRepository.GetBookingById(id);
+            if (booking == null) return NotFound("booking not found");
+            if (i == 0 || i > 2) return BadRequest("Invalid Status Enumeration");
+            booking.CurrentStatus = (GuestStatusEnum)i;
+            _bookingRepository.SaveChanges();
+            return Ok("Booking status changed");
         }
     }
        
