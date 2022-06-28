@@ -48,7 +48,7 @@ namespace TravelMoreAPI.Repositories
 
         public IEnumerable<User> GetUsers()
         {
-            return _context.Users.Include(u => u.Apartment).Include(u => u.Booking).Include(u => u.Guest);
+            return _context.Users.Include(u => u.Apartment);
         }
 
 
@@ -67,10 +67,6 @@ namespace TravelMoreAPI.Repositories
             return _context.Users.FirstOrDefault(x => x.ApartmentId == apartmentID);
         }
 
-        public void DeleteGuest(Guest guestToRemove)
-        {
-            _context.Guests.Remove(guestToRemove);
-        }
     }
 }
 

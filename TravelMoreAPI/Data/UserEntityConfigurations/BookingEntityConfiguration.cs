@@ -13,13 +13,20 @@ public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
             .IsRequired()
             .HasMaxLength(255);
 
-        builder.Property(u => u.StayFrom)
+        builder.Property(u => u.HostFrom)
             .IsRequired();
         
-        builder.Property(u => u.StayTo)
+        builder.Property(u => u.HostTo)
             .IsRequired();
 
         builder.Property(u => u.UserId)
             .IsRequired();
+        
+        builder.Property(u => u.GuestId)
+            .IsRequired();
+        
+        builder.Property(u => u.ApartmentId)
+            .IsRequired();
+
     }
 }

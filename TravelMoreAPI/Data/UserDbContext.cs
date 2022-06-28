@@ -12,7 +12,6 @@ namespace TravelMoreAPI.Data
         }
 
         public DbSet<Booking> Bookings { get; set; }
-        public DbSet<Guest> Guests { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -22,7 +21,6 @@ namespace TravelMoreAPI.Data
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ApartmentEntityConfiguration());
             modelBuilder.ApplyConfiguration(new BookingEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new GuestEntityConfiguration());
 
             modelBuilder.Entity<User>()
                .HasIndex(u => new { u.Email, u.UserName})

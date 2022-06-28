@@ -95,6 +95,7 @@ namespace TravelMoreAPI.Controllers
             return Ok(token);
         }
 
+        [Authorize]
         [HttpPost("ChangeEmail")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> ChangeEmail(EmailDto emailDto)
@@ -121,7 +122,7 @@ namespace TravelMoreAPI.Controllers
             return Ok("Email changed Sucessfully");
         }
 
-
+        [Authorize]
         [HttpPost("ChangeUserName")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> ChangeUserName(UserNameDto userNameDto)
@@ -148,7 +149,7 @@ namespace TravelMoreAPI.Controllers
             return Ok("UserName changed Sucessfully");
         }
 
-
+        [Authorize]
         [HttpPost("ChangePassword")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> ChangePassword(PasswordDto passwordDto)
@@ -178,7 +179,7 @@ namespace TravelMoreAPI.Controllers
             return _userRepository.GetUsers();
         }
 
-        //[Authorize]
+        [AllowAnonymous]
         [HttpGet("GetUserProfile/{id:guid}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

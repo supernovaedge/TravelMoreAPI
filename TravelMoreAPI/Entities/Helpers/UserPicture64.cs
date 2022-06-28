@@ -11,6 +11,5 @@ namespace TravelMoreAPI.Entities
         public Guid UserId { get; set; }
         public byte[] UserPicture { get; set; }
         public string UserHeader { get; set; }
-
     }
 }

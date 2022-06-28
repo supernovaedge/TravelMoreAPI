@@ -14,8 +14,5 @@ namespace TravelMoreAPI.Entities
         public byte[] PasswordSalt { get; set; }
         public Guid? ApartmentId { get; set; }
         public Apartment? Apartment { get; set; }
-        public List<Guest>? Guest { get; set; }
-        public List<Booking>? Booking { get; set; }
-
     }
 }

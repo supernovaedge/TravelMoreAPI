@@ -9,16 +9,12 @@ namespace TravelMoreAPI
 {
     public class TokenCreationService : ITokenCreationService
     {
-        private readonly JwtTokenOptions _jwtOptions;
         private readonly IConfiguration _configuration;
 
-        public TokenCreationService(IOptions<JwtTokenOptions> jwtOptions, IConfiguration iConfiguration)
+        public TokenCreationService(IConfiguration configuration)
         {
-             _jwtOptions = jwtOptions.Value;
-            _configuration = iConfiguration ?? throw new ArgumentNullException(nameof(iConfiguration));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
-
-
 
         public string CreateToken(User user)
         {

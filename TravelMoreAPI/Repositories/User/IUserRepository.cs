@@ -11,7 +11,6 @@ namespace TravelMoreAPI.Repositories
         User GetUserByApartmentID(Guid apartmentID);
         void AddUser(User user);
         void SaveChanges();
-        void DeleteGuest(Guest guestToRemove);
         Profile? GetUserProfileById(Guid id);
         
     }

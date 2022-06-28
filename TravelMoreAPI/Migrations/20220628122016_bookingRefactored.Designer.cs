@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelMoreAPI.Data;
 
@@ -11,9 +12,10 @@ using TravelMoreAPI.Data;
 namespace TravelMoreAPI.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220628122016_bookingRefactored")]
+    partial class bookingRefactored
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,14 +92,24 @@ namespace TravelMoreAPI.Migrations
                     b.Property<DateTime>("HostTo")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("BookingId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Bookings");
                 });
@@ -185,6 +197,17 @@ namespace TravelMoreAPI.Migrations
                     b.ToTable("UserPicture64");
                 });
 
+            modelBuilder.Entity("TravelMoreAPI.Entities.Booking", b =>
+                {
+                    b.HasOne("TravelMoreAPI.Entities.User", null)
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("TravelMoreAPI.Entities.User", null)
+                        .WithMany("Guests")
+                        .HasForeignKey("UserId1");
+                });
+
             modelBuilder.Entity("TravelMoreAPI.Entities.Helpers.ApartmentPicture64", b =>
                 {
                     b.HasOne("TravelMoreAPI.Entities.Apartment", null)
@@ -220,6 +243,10 @@ namespace TravelMoreAPI.Migrations
 
             modelBuilder.Entity("TravelMoreAPI.Entities.User", b =>
                 {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Guests");
+
                     b.Navigation("UserPicture")
                         .IsRequired();
                 });

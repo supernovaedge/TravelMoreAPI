@@ -4,9 +4,9 @@
     {
         public enum GuestStatusEnum
         {
-            pending,
-            denied,
-            accepted
+            Pending,
+            Denied,
+            Accepted
         }
     }
 }
