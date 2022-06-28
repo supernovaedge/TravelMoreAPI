@@ -96,10 +96,12 @@ namespace TravelMoreAPI.Controllers
                 return NotFound("User has no apartment");
             }
 
-
+            _bookingRepository.DeleteBookingsByApartmentId(entity.ApartmentId.GetValueOrDefault());
             _apartmentRepository.DeleteApartment(entity.Apartment);
             entity.ApartmentId = null;
-            _bookingRepository.SaveChanges();
+
+            _apartmentRepository.SaveChanges();
+            
             return Ok("Apartment removed");
         }
     }

@@ -31,19 +31,6 @@ namespace TravelMoreAPI.Repositories.BookingT
             return booking;
         }
 
-        public List<Booking>? GetBookingsByGuestId(Guid id)
-        {
-           // var user = _context.Users.Include(x => x.Bookings).FirstOrDefault(x => x.UserId == id);
-           // if (user == null) throw new Exception("user not found");
-           // var bookings = user.Bookings;
-           // return bookings;
-           throw new NotImplementedException();
-        }
-
-        public List<Booking>? GetBookingsByHostId(Guid id)
-        {
-            throw new NotImplementedException();
-        }
 
         public void SaveChanges()
         {
@@ -111,6 +98,15 @@ namespace TravelMoreAPI.Repositories.BookingT
             return profile;
         }
 
-
+        public void DeleteBookingsByApartmentId(Guid id)
+        {
+            var list =
+                from booking in _context.Bookings
+                where booking.ApartmentId == id
+                select booking;
+            foreach (var entity in list)
+                _context.Remove(entity);
+            _context.SaveChanges();
+        }
     }
 }

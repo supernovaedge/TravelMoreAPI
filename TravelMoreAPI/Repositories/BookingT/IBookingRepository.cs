@@ -7,13 +7,11 @@ namespace TravelMoreAPI.Repositories.BookingT
     {
         IEnumerable<Booking> GetBookings();
         void AddBooking(Booking booking);
-        List<Booking>? GetBookingsByGuestId(Guid id);
-        List<Booking>? GetBookingsByHostId(Guid id);
-
         BookingProfile ConvertBookingProfile(Booking booking);
         GuestProfile ConvertGuestProfile(Booking booking);
         List<BookingProfile> GetBookingProfile(Guid id);
         List<GuestProfile> GetGuestProfile(Guid id);
+        void DeleteBookingsByApartmentId(Guid id);
         void SaveChanges();
     }
 }
