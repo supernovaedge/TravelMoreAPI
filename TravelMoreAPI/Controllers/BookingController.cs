@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TravelMoreAPI.Entities;
+using TravelMoreAPI.Entities.Helpers;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Repositories;
 using TravelMoreAPI.Repositories.BookingT;
@@ -39,6 +40,15 @@ namespace TravelMoreAPI.Controllers
             {
                 return BadRequest("Can't book your own Apartment");
             }
+            if (bookingDto.HostFrom.Date < DateTime.Today)
+            {
+                return BadRequest("Can't book past days");
+            }
+            foreach (BookingProfile bookingEntity in _bookingRepository.GetBookingProfile(bookingDto.GuestId))
+            {
+                if (bookingDto.HostFrom.Date <= bookingEntity.stayFrom.Date && bookingEntity.stayTo.Date <= bookingDto.HostTo.Date ) return BadRequest("Dates overlap with previous booking request");
+            }
+            
             var booking = new Booking()
             {
                 BookingId = Guid.NewGuid(),
@@ -47,11 +57,12 @@ namespace TravelMoreAPI.Controllers
                 FirstName = bookingDto.FirstName,
                 LastName = bookingDto.LastName,
                 City = bookingDto.City,
-                HostFrom = bookingDto.HostFrom,
-                HostTo = bookingDto.HostTo,
-                CurrentStatus = Entities.Helpers.GuestStatus.GuestStatusEnum.Pending,
+                HostFrom = bookingDto.HostFrom.Date,
+                HostTo = bookingDto.HostTo.Date,
+                CurrentStatus = (GuestStatusEnum)0,
                 HostId = entity.UserId,
             };
+            
             _bookingRepository.AddBooking(booking);
      
             _bookingRepository.SaveChanges();

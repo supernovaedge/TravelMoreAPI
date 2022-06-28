@@ -22,7 +22,7 @@ namespace TravelMoreAPI.Repositories
 
         public IEnumerable<Apartment> GetApartments()
         {
-            return _context.Apartments;
+            return _context.Apartments.Include(x => x.ApartmentPicture).Take(10);
         }
 
         public void AddApartment(Apartment apartment)
