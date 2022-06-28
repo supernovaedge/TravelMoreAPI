@@ -55,6 +55,12 @@ namespace TravelMoreAPI.Repositories.BookingT
         }
 
 
+        public void DeleteBooking(Booking booking)
+        {
+            _context.Remove(booking);
+            _context.SaveChanges();
+        }
+
         List<GuestProfile> IBookingRepository.GetGuestProfile(Guid id)
         {
             var list =

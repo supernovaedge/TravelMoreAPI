@@ -13,6 +13,7 @@ namespace TravelMoreAPI.Repositories.BookingT
         List<BookingProfile> GetBookingProfile(Guid id);
         List<GuestProfile> GetGuestProfile(Guid id);
         void DeleteBookingsByApartmentId(Guid id);
+        void DeleteBooking(Booking booking);
         void SaveChanges();
     }
 }

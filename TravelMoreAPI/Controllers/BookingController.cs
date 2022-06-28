@@ -98,6 +98,19 @@ namespace TravelMoreAPI.Controllers
             _bookingRepository.SaveChanges();
             return Ok("Booking status changed");
         }
-    }
-       
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Delete(Guid id)
+        {
+            var bookingToDelete = _bookingRepository.GetBookingById(id);
+            if (bookingToDelete == null) return NotFound("Booking not found");
+
+            _bookingRepository.DeleteBooking(bookingToDelete);
+            _bookingRepository.SaveChanges();
+
+            return Ok("Booking canceled");
+        }
+    }    
 }
