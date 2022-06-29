@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
+using TravelMoreAPI.Models.Dtos;
 
 namespace TravelMoreAPI.Repositories
 {
@@ -13,8 +14,6 @@ namespace TravelMoreAPI.Repositories
             _context = context;
         }
 
-        
-
         public Apartment? GetApartmentById(Guid id)
         {
             return _context.Apartments.Include(u => u.ApartmentPicture).FirstOrDefault(x => x.ApartmentId == id);
@@ -23,6 +22,19 @@ namespace TravelMoreAPI.Repositories
         public IEnumerable<Apartment> GetApartments(int n)
         {
             return _context.Apartments.Include(x => x.ApartmentPicture).Take(n);
+        }
+
+        public IEnumerable<Apartment> GetApartments(SearchCriteriaDto searchCriteria = null)
+        {
+            if (searchCriteria == null)
+            {
+                return _context.Apartments.Include(x => x.ApartmentPicture);
+            }
+
+            return _context.Apartments.Where(x => x.Address.Contains(searchCriteria.Address)
+                                            && x.BedsNumber == searchCriteria.BedNumber
+                                            && x.City == searchCriteria.City)
+                                            .Include(x => x.ApartmentPicture);
         }
 
         public void AddApartment(Apartment apartment)

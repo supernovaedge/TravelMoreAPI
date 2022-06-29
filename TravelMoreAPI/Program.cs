@@ -10,6 +10,7 @@ using TravelMoreAPI.Entities;
 using TravelMoreAPI.Models;
 using TravelMoreAPI.Repositories;
 using TravelMoreAPI.Repositories.BookingT;
+using TravelMoreAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,6 +87,7 @@ builder.Services.AddDbContext<UserDbContext>(
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
+builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<ITokenCreationService, TokenCreationService>();
 
 var app = builder.Build();

@@ -44,6 +44,10 @@ namespace TravelMoreAPI.Controllers
             {
                 return BadRequest("Can't book past days");
             }
+            if(bookingDto.HostTo.Date < bookingDto.HostFrom)
+            {
+                return BadRequest("Start date Can't be after end Date");
+            }
             foreach (BookingProfile bookingEntity in _bookingRepository.GetBookingProfile(bookingDto.GuestId))
             {
                 if (bookingDto.HostFrom.Date <= bookingEntity.stayFrom.Date && bookingEntity.stayTo.Date <= bookingDto.HostTo.Date ) return BadRequest("Dates overlap with previous booking request");
