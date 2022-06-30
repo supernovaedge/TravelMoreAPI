@@ -26,7 +26,7 @@ namespace TravelMoreAPI.Controllers
         }
 
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost("Booking")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<Booking> Create(BookingDto bookingDto)
@@ -74,43 +74,67 @@ namespace TravelMoreAPI.Controllers
             return Ok("Stay requested");
         }
 
+        [Authorize]
         [HttpGet("BookingProfile/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetBookingProfileId(Guid id)
         {
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != id.ToString())
+            {
+                return Forbid();
+            }
             var booking = _bookingRepository.GetBookingProfile(id);
 
             return booking == null ? NotFound() : Ok(booking);
         }
 
+        [Authorize]
         [HttpGet("GuestProfile/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetGuestProfileId(Guid id)
         {
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != id.ToString())
+            {
+                return Forbid();
+            }
             var booking = _bookingRepository.GetGuestProfile(id);
 
             return booking == null ? NotFound() : Ok(booking);
         }
 
+        [Authorize]
         [HttpPost("GuestStatus/{id:guid}")]
         public IActionResult SetBookingStatus(Guid id,int i)
         {
             var booking = _bookingRepository.GetBookingById(id);
             if (booking == null) return NotFound("booking not found");
+
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != booking.HostId.ToString())
+            {
+                return Forbid();
+            }
             if (i == 0 || i > 2) return BadRequest("Invalid Status Enumeration");
             booking.CurrentStatus = (GuestStatusEnum)i;
             _bookingRepository.SaveChanges();
             return Ok("Booking status changed");
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete(Guid id)
+        public IActionResult DeleteBooking(Guid id)
         {
             var bookingToDelete = _bookingRepository.GetBookingById(id);
             if (bookingToDelete == null) return NotFound("Booking not found");
-
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != bookingToDelete.GuestId.ToString())
+            {
+                return Forbid();
+            }
             _bookingRepository.DeleteBooking(bookingToDelete);
             _bookingRepository.SaveChanges();
 

@@ -1,4 +1,5 @@
 ﻿using TravelMoreAPI.Entities;
+using TravelMoreAPI.Entities.Helpers;
 using TravelMoreAPI.Models.Dtos;
 
 namespace TravelMoreAPI.Repositories
@@ -14,5 +15,6 @@ namespace TravelMoreAPI.Repositories
         void SaveChanges();
 
         void DeleteApartment(Apartment apartment);
+        ApartmentWithStatus ConvertApartmentWithStatus(Apartment apartment);
     }
 }

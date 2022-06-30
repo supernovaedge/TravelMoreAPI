@@ -33,24 +33,28 @@ namespace TravelMoreAPI.Controllers
             return _apartmentRepository.GetApartments(n);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Apartment), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetById(Guid id)
+        public IActionResult GetApartmentById(Guid id)
         {
             var apartment = _apartmentRepository.GetApartmentById(id);
-
             return apartment == null ? NotFound() : Ok(apartment);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("AddApartment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<Apartment> Create(ApartmentDto apartmentDto)
         {
-     
-            var userId = apartmentDto.UserID;
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != apartmentDto.UserId.ToString())
+            {
+                return Forbid();
+            }
+
+            var userId = apartmentDto.UserId;
 
             var entity = _userRepository.GetUserById(userId);
             if(entity == null)
@@ -79,12 +83,18 @@ namespace TravelMoreAPI.Controllers
             return Ok(apartment);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete(Guid id)
+        public IActionResult DeleteApartment(Guid id)
         {
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != id.ToString())
+            {
+                return Forbid();
+            }
+
             var entity = _userRepository.GetUserById(id);
             if (entity == null)
             {

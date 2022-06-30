@@ -1,11 +1,9 @@
-﻿
-using System.Security.Cryptography;
-
+﻿using System.Security.Cryptography;
 
 namespace TravelMoreAPI
 {
     
-    public class PasswordProcessing
+    public class PasswordProcessingService 
     {
 
         public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

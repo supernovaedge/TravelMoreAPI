@@ -14,6 +14,7 @@ namespace TravelMoreAPI.Entities
         public string? ApartmentDescription { get; set; }
         public string? ApartmentCoordinates { get; set; }
         public ApartmentPicture64 ApartmentPicture { get; set; }
+        public bool? ApartmentStatus { get; set; }
 
     }
 }

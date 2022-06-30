@@ -27,17 +27,14 @@ namespace TravelMoreAPI.Services
             {
                 if (searchCriteria.StartDate <= bookingEntity.HostFrom.Date && bookingEntity.HostTo.Date <= searchCriteria.EndDate.Date && bookingEntity.CurrentStatus == GuestStatus.GuestStatusEnum.Accepted)
                 {
-                    var apartmentToRemove = apartments.FirstOrDefault(x=> x.ApartmentId == bookingEntity.ApartmentId);
-
-                    if(apartmentToRemove == null)
+                    var apartment = apartments.FirstOrDefault(x => x.ApartmentId == bookingEntity.ApartmentId);
+                    if (apartment == null)
                     {
                         continue;
                     }
-
-                    apartments.Remove(apartmentToRemove);
+                    apartment.ApartmentStatus = false;
                 }
             }
-
             return apartments;
         }
     }

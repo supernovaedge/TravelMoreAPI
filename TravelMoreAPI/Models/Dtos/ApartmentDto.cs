@@ -2,7 +2,7 @@
 {
     public class ApartmentDto
     {
-        public Guid UserID { get; set; } = Guid.Empty;
+        public Guid UserId { get; set; } = Guid.Empty;
         public string City { get; set; } =  string.Empty;
         public string Address { get; set; } = string.Empty;
         public string ApartmentCoordinates { get; set; } = string.Empty;

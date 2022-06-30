@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TravelMoreAPI.Entities;
+using TravelMoreAPI.Entities.Helpers;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Services;
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
+using TravelMoreAPI.Entities.Helpers;
 using TravelMoreAPI.Models.Dtos;
 
 namespace TravelMoreAPI.Repositories
@@ -32,8 +33,8 @@ namespace TravelMoreAPI.Repositories
             }
 
             return _context.Apartments.Where(x => x.Address.Contains(searchCriteria.Address)
-                                            && x.BedsNumber == searchCriteria.BedNumber
-                                            && x.City == searchCriteria.City)
+                                            || (x.BedsNumber == searchCriteria.BedNumber
+                                            && x.City == searchCriteria.City))
                                             .Include(x => x.ApartmentPicture);
         }
 
@@ -51,6 +52,22 @@ namespace TravelMoreAPI.Repositories
         {
             _context.Apartments.Remove(apartment);
             SaveChanges();
+        }
+
+        public ApartmentWithStatus ConvertApartmentWithStatus(Apartment apartment)
+        {
+            var apartmentWithStatus = new ApartmentWithStatus()
+            {
+                ApartmentId = apartment.ApartmentId,
+                ApartmentPicture = apartment.ApartmentPicture,
+                Address = apartment.Address,
+                BedsNumber = apartment.BedsNumber,
+                City = apartment.City,
+                DistanceToCenter = apartment.DistanceToCenter,
+                ApartmentCoordinates = apartment.ApartmentCoordinates,
+                ApartmentDescription = apartment.ApartmentDescription,
+            };
+            return apartmentWithStatus;
         }
     }
 }

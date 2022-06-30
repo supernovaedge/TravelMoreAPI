@@ -41,7 +41,7 @@ namespace TravelMoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> Create(UserDto userDto)
         {
-            PasswordProcessing.CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            PasswordProcessingService.CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             var newGuid = Guid.NewGuid();
             var user = new User()
@@ -85,7 +85,7 @@ namespace TravelMoreAPI.Controllers
             {
                 return BadRequest("UserName not found");
             }
-            if (!PasswordProcessing.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            if (!PasswordProcessingService.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
                 return BadRequest("Wrong Password");
             }
@@ -100,6 +100,11 @@ namespace TravelMoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> ChangeEmail(EmailDto emailDto)
         {
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != emailDto.UserId.ToString())
+            {
+                return Forbid();
+            }
 
             var entity = _userRepository.GetUserById(emailDto.UserId);
             if (entity == null)
@@ -122,11 +127,17 @@ namespace TravelMoreAPI.Controllers
             return Ok("Email changed Sucessfully");
         }
 
+
         [Authorize]
         [HttpPost("ChangeUserName")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> ChangeUserName(UserNameDto userNameDto)
         {
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != userNameDto.UserId.ToString())
+            {
+                return Forbid();
+            }
 
             var entity = _userRepository.GetUserById(userNameDto.UserId);
             if (entity == null)
@@ -155,13 +166,19 @@ namespace TravelMoreAPI.Controllers
         public ActionResult<User> ChangePassword(PasswordDto passwordDto)
         {
 
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != passwordDto.UserId.ToString())
+            {
+                return Forbid();
+            }
+
             var entity = _userRepository.GetUserById(passwordDto.UserId);
             if (entity == null)
             {
                 return BadRequest("User not found");
             }
 
-            PasswordProcessing.CreatePasswordHash(passwordDto.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
+            PasswordProcessingService.CreatePasswordHash(passwordDto.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
             entity.PasswordHash = passwordHash;
             entity.PasswordSalt = passwordSalt;
@@ -179,12 +196,17 @@ namespace TravelMoreAPI.Controllers
             return _userRepository.GetUsers();
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("GetUserProfile/{id:guid}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetUserProfileById(Guid id)
         {
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != id.ToString())
+            {
+                return Forbid();
+            }
             var profile = _userRepository.GetUserProfileById(id);
 
             return profile == null ? NotFound() : Ok(profile);
