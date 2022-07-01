@@ -9,7 +9,7 @@ namespace TravelMoreAPI.Repositories
     public class ApartmentRepository : IApartmentRepository
     {
 
-        private readonly Data.UserDbContext _context;
+        private readonly UserDbContext _context;
         public ApartmentRepository(UserDbContext context)
         {
             _context = context;

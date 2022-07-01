@@ -21,6 +21,11 @@ namespace TravelMoreAPI.Controllers
         [HttpPost]
         public ActionResult<IEnumerable<Apartment>> GetApartment(SearchCriteriaDto searchCriteriaDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ModelState);
+            }
+
             var apartments = _searchService.GetApartments(searchCriteriaDto);
 
             if (apartments == null || apartments.Count == 0)

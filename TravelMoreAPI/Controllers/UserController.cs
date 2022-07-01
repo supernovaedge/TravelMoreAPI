@@ -39,8 +39,13 @@ namespace TravelMoreAPI.Controllers
 
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<User> Create(UserDto userDto)
+        public IActionResult Create(UserDto userDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ModelState);
+            }
+
             PasswordProcessingService.CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             var newGuid = Guid.NewGuid();
@@ -80,6 +85,10 @@ namespace TravelMoreAPI.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(UserLoginDto request)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ModelState);
+            }
             var user = await _context.Users.FirstOrDefaultAsync(m => m.UserName == request.UserName.ToLower());
             if (user == null)
             {
@@ -100,6 +109,11 @@ namespace TravelMoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> ChangeEmail(EmailDto emailDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ModelState);
+            }
+
             var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
             if (claimId != emailDto.UserId.ToString())
             {
@@ -133,6 +147,11 @@ namespace TravelMoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> ChangeUserName(UserNameDto userNameDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ModelState);
+            }
+
             var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
             if (claimId != userNameDto.UserId.ToString())
             {
@@ -165,6 +184,10 @@ namespace TravelMoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<User> ChangePassword(PasswordDto passwordDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ModelState);
+            }
 
             var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
             if (claimId != passwordDto.UserId.ToString())

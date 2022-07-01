@@ -1,8 +1,9 @@
-using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 using TravelMoreAPI;
 using TravelMoreAPI.Data;
@@ -34,7 +35,11 @@ builder.Services.AddCors(options =>
 
 
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson().AddFluentValidation(fv =>
+{
+    fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+});
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -78,7 +83,6 @@ builder.Services.AddSwaggerGen(c => {
         });
     });
 builder.Services.AddMvc();
-builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
 builder.Services.Configure<JwtTokenOptions>(builder.Configuration.GetSection("JwtToken"));
 
 builder.Services.AddDbContext<UserDbContext>(

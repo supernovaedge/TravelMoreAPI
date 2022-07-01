@@ -31,6 +31,11 @@ namespace TravelMoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<Booking> Create(BookingDto bookingDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ModelState);
+            }
+
             var entity = _userRepository.GetUserByApartmentID(bookingDto.ApartmentId);
             if (entity == null)
             {
@@ -90,16 +95,16 @@ namespace TravelMoreAPI.Controllers
             return booking == null ? NotFound() : Ok(booking);
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("GuestProfile/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetGuestProfileId(Guid id)
         {
-            //var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
-            //if (claimId != id.ToString())
-           // {
-               // return Forbid();
-            //}
+            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            if (claimId != id.ToString())
+            {
+                return Forbid();
+            }
             var booking = _bookingRepository.GetGuestProfile(id);
 
             return booking == null ? NotFound() : Ok(booking);
@@ -118,19 +123,22 @@ namespace TravelMoreAPI.Controllers
                 return Forbid();
             }
             if (i == 0 || i > 2) return BadRequest("Invalid Status Enumeration");
+            var userGuests = _bookingRepository.GetGuestProfile(Guid.Parse(claimId));
 
-            foreach (GuestProfile bookingEntity in _bookingRepository.GetGuestProfile(Guid.Parse(claimId)))
+            if (i == 2)
             {
-                if (booking.HostFrom.Date <= bookingEntity.stayTo.Date && bookingEntity.stayFrom.Date <= booking.HostTo.Date && bookingEntity.GuestStatusEnum == GuestStatus.GuestStatusEnum.Accepted)
+                foreach (GuestProfile bookingEntity in userGuests)
                 {
-                    booking.CurrentStatus = GuestStatusEnum.NotPossible;
-                    _bookingRepository.SaveChanges();
-                    return BadRequest("Other booking is Accepted during this dates");
+                    if (booking.HostFrom.Date <= bookingEntity.stayTo.Date && bookingEntity.stayFrom.Date <= booking.HostTo.Date)
+                    {
+                        _bookingRepository.GetBookingById(bookingEntity.BookingId).CurrentStatus = GuestStatusEnum.NotPossible;
+                    }
                 }
             }
+            
             booking.CurrentStatus = (GuestStatusEnum)i;
             _bookingRepository.SaveChanges();
-            if(i == 1) return Ok("Booking Denied");
+            if(i==1) return Ok("Booking Denied");
             return Ok("Booking Accepted");
         }
 
@@ -146,6 +154,10 @@ namespace TravelMoreAPI.Controllers
             if (claimId != bookingToDelete.GuestId.ToString())
             {
                 return Forbid();
+            }
+            if(bookingToDelete.CurrentStatus == (GuestStatusEnum)2)
+            {
+                return BadRequest("Booking Already Accepted");
             }
             _bookingRepository.DeleteBooking(bookingToDelete);
             _bookingRepository.SaveChanges();
