@@ -25,7 +25,7 @@ namespace TravelMoreAPI.Services
 
             foreach (Booking bookingEntity in _bookingRepository.GetBookings())
             {
-                if (searchCriteria.StartDate.Date <= bookingEntity.HostFrom.Date && bookingEntity.HostTo.Date <= searchCriteria.EndDate.Date && bookingEntity.CurrentStatus == GuestStatus.GuestStatusEnum.Accepted)
+                if (searchCriteria.StartDate.Date <= bookingEntity.HostTo.Date && bookingEntity.HostFrom.Date <= searchCriteria.EndDate.Date && bookingEntity.CurrentStatus == GuestStatus.GuestStatusEnum.Accepted)
                 {
                     var apartment = apartments.FirstOrDefault(x => x.ApartmentId == bookingEntity.ApartmentId);
                     if (apartment == null)
