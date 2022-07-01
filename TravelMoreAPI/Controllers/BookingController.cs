@@ -118,9 +118,19 @@ namespace TravelMoreAPI.Controllers
                 return Forbid();
             }
             if (i == 0 || i > 2) return BadRequest("Invalid Status Enumeration");
+
+            foreach (BookingProfile bookingEntity in _bookingRepository.GetBookingProfile(Guid.Parse(claimId)))
+            {
+                if (booking.HostFrom.Date <= bookingEntity.stayFrom.Date && bookingEntity.stayTo.Date <= booking.HostTo.Date && bookingEntity.currentStatus == GuestStatus.GuestStatusEnum.Accepted)
+                {
+                    booking.CurrentStatus = GuestStatusEnum.NotPossible;
+                    return BadRequest("Other booking Accepted during this dates");
+                }
+            }
             booking.CurrentStatus = (GuestStatusEnum)i;
             _bookingRepository.SaveChanges();
-            return Ok("Booking status changed");
+            if(i == 1) return Ok("Booking Denied");
+            if (i == 2) return Ok("Booking Accepted");
         }
 
         [Authorize]

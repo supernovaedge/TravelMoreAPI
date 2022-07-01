@@ -6,7 +6,8 @@
         {
             Pending,
             Denied,
-            Accepted
+            Accepted,
+            NotPossible,
         }
     }
 }
