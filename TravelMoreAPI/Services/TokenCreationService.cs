@@ -21,6 +21,7 @@ namespace TravelMoreAPI
             List<Claim> claims = new List<Claim>
             {
                 new Claim("UserId", user.UserId.ToString()),
+                new Claim("Username", user.UserName),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
@@ -32,7 +33,7 @@ namespace TravelMoreAPI
                 _configuration["JwtToken:Issuer"],
                 _configuration["JwtToken:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(3),
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
