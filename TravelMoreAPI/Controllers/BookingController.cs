@@ -50,7 +50,7 @@ namespace TravelMoreAPI.Controllers
             }
             foreach (BookingProfile bookingEntity in _bookingRepository.GetBookingProfile(bookingDto.GuestId))
             {
-                if (bookingDto.HostFrom.Date <= bookingEntity.stayFrom.Date && bookingEntity.stayTo.Date <= bookingDto.HostTo.Date ) return BadRequest("Dates overlap with previous booking request");
+                if (bookingDto.HostFrom.Date <= bookingEntity.stayTo.Date && bookingEntity.stayFrom.Date <= bookingDto.HostTo.Date ) return BadRequest("Dates overlap with previous booking request");
             }
 
             var booking = new Booking()

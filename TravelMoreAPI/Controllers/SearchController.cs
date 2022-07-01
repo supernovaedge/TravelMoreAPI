@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TravelMoreAPI.Entities;
-using TravelMoreAPI.Entities.Helpers;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Services;
 
@@ -17,6 +17,7 @@ namespace TravelMoreAPI.Controllers
             _searchService = searchService;
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult<IEnumerable<Apartment>> GetApartment(SearchCriteriaDto searchCriteriaDto)
         {
