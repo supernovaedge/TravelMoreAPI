@@ -27,6 +27,8 @@ namespace TravelMoreAPI.Data
                .IsUnique();
 
         }
+
+        
         
 
     }

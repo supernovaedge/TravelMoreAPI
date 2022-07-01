@@ -16,6 +16,7 @@ namespace TravelMoreAPI.Entities
         public string LastName { get; set; }
         public DateTime HostFrom { get; set; }
         public DateTime HostTo { get; set; }
+        public UserPicture64? GuestPicture { get; set; }
 
         private GuestStatusEnum _guestStatus;
         public GuestStatusEnum CurrentStatus

@@ -9,5 +9,7 @@ namespace TravelMoreAPI.Entities.Helpers
         public string lastname;
         public DateTime stayFrom;
         public DateTime stayTo;
+        public UserPicture64 GuestPicture64;
+        public GuestStatusEnum GuestStatusEnum;
     }
 }

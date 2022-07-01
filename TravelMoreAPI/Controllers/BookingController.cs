@@ -52,7 +52,7 @@ namespace TravelMoreAPI.Controllers
             {
                 if (bookingDto.HostFrom.Date <= bookingEntity.stayFrom.Date && bookingEntity.stayTo.Date <= bookingDto.HostTo.Date ) return BadRequest("Dates overlap with previous booking request");
             }
-            
+
             var booking = new Booking()
             {
                 BookingId = Guid.NewGuid(),
@@ -65,6 +65,7 @@ namespace TravelMoreAPI.Controllers
                 HostTo = bookingDto.HostTo.Date,
                 CurrentStatus = (GuestStatusEnum)0,
                 HostId = entity.UserId,
+                GuestPicture = _userRepository.GetUserProfileById(bookingDto.GuestId).UserPicture,
             };
             
             _bookingRepository.AddBooking(booking);
@@ -89,16 +90,16 @@ namespace TravelMoreAPI.Controllers
             return booking == null ? NotFound() : Ok(booking);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("GuestProfile/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetGuestProfileId(Guid id)
         {
-            var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
-            if (claimId != id.ToString())
-            {
-                return Forbid();
-            }
+            //var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            //if (claimId != id.ToString())
+           // {
+               // return Forbid();
+            //}
             var booking = _bookingRepository.GetGuestProfile(id);
 
             return booking == null ? NotFound() : Ok(booking);

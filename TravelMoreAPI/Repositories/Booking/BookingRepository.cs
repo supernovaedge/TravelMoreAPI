@@ -1,4 +1,5 @@
-﻿using TravelMoreAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
 using TravelMoreAPI.Entities.Helpers;
 
@@ -65,6 +66,7 @@ namespace TravelMoreAPI.Repositories.BookingT
         {
             var list =
                 from booking in _context.Bookings
+                    .Include(x=> x.GuestPicture)
                 where booking.HostId == id
                 select booking;
             var guestProfile = new List<GuestProfile>();
@@ -100,6 +102,8 @@ namespace TravelMoreAPI.Repositories.BookingT
                 BookingId = booking.BookingId,
                 firstname = booking.FirstName,
                 lastname  = booking.LastName,
+                GuestPicture64 = booking.GuestPicture,
+                GuestStatusEnum = booking.CurrentStatus,
             };
             return profile;
         }
