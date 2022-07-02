@@ -4,7 +4,7 @@ using TravelMoreAPI.Entities;
 using TravelMoreAPI.Entities.Helpers;
 
 
-namespace TravelMoreAPI.Repositories.BookingT
+namespace TravelMoreAPI.Repositories.BookingRepository
 {
     public class BookingRepository : IBookingRepository
     {

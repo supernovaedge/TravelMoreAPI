@@ -7,16 +7,15 @@ using System.Reflection;
 using System.Text;
 using TravelMoreAPI;
 using TravelMoreAPI.Data;
-using TravelMoreAPI.Entities;
+using TravelMoreAPI.Extensions;
 using TravelMoreAPI.Models;
 using TravelMoreAPI.Repositories;
-using TravelMoreAPI.Repositories.BookingT;
+using TravelMoreAPI.Repositories.BookingRepository;
 using TravelMoreAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -105,19 +104,16 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseStaticFiles();
+app.UseHttpsRedirection();
 
 app.UseRouting();
 
 app.UseCors(MyAllowSpecificOrigins);
-
-app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
@@ -126,8 +122,6 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapRazorPages();
 });
-app.MapControllers();
 
 app.Run();

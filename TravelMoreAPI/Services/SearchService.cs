@@ -2,7 +2,7 @@
 using TravelMoreAPI.Entities.Helpers;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Repositories;
-using TravelMoreAPI.Repositories.BookingT;
+using TravelMoreAPI.Repositories.BookingRepository;
 
 namespace TravelMoreAPI.Services
 {

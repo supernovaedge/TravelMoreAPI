@@ -5,7 +5,7 @@ using TravelMoreAPI.Entities;
 using TravelMoreAPI.Entities.Helpers;
 using TravelMoreAPI.Models.Dtos;
 using TravelMoreAPI.Repositories;
-using TravelMoreAPI.Repositories.BookingT;
+using TravelMoreAPI.Repositories.BookingRepository;
 using static TravelMoreAPI.Entities.Helpers.GuestStatus;
 
 namespace TravelMoreAPI.Controllers

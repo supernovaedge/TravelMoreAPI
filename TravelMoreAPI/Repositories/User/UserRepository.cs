@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using TravelMoreAPI.Data;
+﻿using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +23,9 @@ namespace TravelMoreAPI.Repositories
 
         public User? GetUserById(Guid id)
         {
-            return _context.Users.Include(u => u.UserPicture).Include(u => u.Apartment).FirstOrDefault(x => x.UserId == id);
+            var user = _context.Users.Include(u => u.UserPicture).Include(u => u.Apartment).FirstOrDefault(x => x.UserId == id);
+
+            return user;
         }
 
         public Profile? GetUserProfileById(Guid id)
