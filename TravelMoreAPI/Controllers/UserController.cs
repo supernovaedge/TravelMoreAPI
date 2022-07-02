@@ -17,25 +17,17 @@ namespace TravelMoreAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserDbContext _context;
         private readonly IUserRepository _userRepository;
         private readonly ITokenCreationService _tokenCreationService;
 
 
-        public UserController(UserDbContext context, IUserRepository repository, ITokenCreationService tokenCreationService)
+        public UserController(IUserRepository repository, ITokenCreationService tokenCreationService)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
             _userRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             _tokenCreationService = tokenCreationService ?? throw new ArgumentNullException(nameof(tokenCreationService));
             
         }
 
-        [Authorize]
-        [HttpGet("void")]
-        public string returnString()
-        {
-            return "this is test";
-        }
 
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -83,13 +75,13 @@ namespace TravelMoreAPI.Controllers
          
 
         [HttpPost("Login")]
-        public async Task<ActionResult<string>> Login(UserLoginDto request)
+        public ActionResult Login(UserLoginDto request)
         {
             if (!ModelState.IsValid)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ModelState);
             }
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.UserName == request.UserName.ToLower());
+            var user = _userRepository.GetUserByUsername(request.UserName);
             if (user == null)
             {
                 return BadRequest("UserName not found");
@@ -245,53 +237,5 @@ namespace TravelMoreAPI.Controllers
 
             return user == null ? NotFound() : Ok(user);
         }
-
-
-        [HttpPatch("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Patch(Guid id,[FromBody] JsonPatchDocument<User> userEntity)
-        {
-
-            var entity = _userRepository.GetUserById(id);
-           
-            if (entity == null) return NotFound("User not found");
-
-            userEntity.ApplyTo(entity, ModelState);
-
-            _userRepository.SaveChanges(); 
-
-            return Ok("Change was Sucessful");  
-        }
-
-
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update (Guid id, User user)
-        {
-            if (id != user.UserId) return BadRequest("Bad Request");
-
-            _context.Entry(user).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return NoContent(); 
-        }
-        
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            var userToDelete = _userRepository.GetUserById(id);
-            if (userToDelete == null) return NotFound("User not found");
-
-            _context.Users.Remove(userToDelete);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
     } 
 }

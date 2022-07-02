@@ -15,6 +15,5 @@ namespace TravelMoreAPI.Repositories
         void SaveChanges();
 
         void DeleteApartment(Apartment apartment);
-        ApartmentWithStatus ConvertApartmentWithStatus(Apartment apartment);
     }
 }
