@@ -26,7 +26,7 @@ namespace TravelMoreAPI.Controllers
             _bookingRepository = bookingRepository ?? throw new ArgumentNullException(nameof(bookingRepository));
         }
 
-
+        [Authorize]
         [HttpGet]
         public IEnumerable<Apartment> Get(int n)
         {
