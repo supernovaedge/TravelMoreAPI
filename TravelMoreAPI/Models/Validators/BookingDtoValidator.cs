@@ -8,7 +8,9 @@ namespace TravelMoreAPI.Models.Validators
         public BookingDtoValidator()
         {
             RuleFor(x => x.HostFrom).GreaterThanOrEqualTo(DateTime.Now.Date);
-            RuleFor(x => x.HostTo).LessThanOrEqualTo(DateTime.Now.Date.AddDays(31));
+            RuleFor(x => x.HostTo)
+                .LessThanOrEqualTo(DateTime.Now.Date.AddDays(31))
+                .GreaterThanOrEqualTo(DateTime.Now.Date);
             RuleFor(x => x.FirstName).Length(2, 30);
             RuleFor(x => x.LastName).Length(2, 30);
             RuleFor(x => x.ApartmentId).NotNull().NotEmpty();

@@ -8,7 +8,7 @@ namespace TravelMoreAPI.Repositories
         User? GetUserById(Guid id);
         User? GetUserByEmail(string email);
         User? GetUserByUsername(string userName);
-        User GetUserByApartmentID(Guid apartmentID);
+        User? GetUserByApartmentId(Guid apartmentId);
         void AddUser(User user);
         void SaveChanges();
         Profile? GetUserProfileById(Guid id);

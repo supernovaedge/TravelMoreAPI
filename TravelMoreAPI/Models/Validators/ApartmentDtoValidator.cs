@@ -11,7 +11,7 @@ namespace TravelMoreAPI.Models.Validators
             RuleFor(x => x.ApartmentCoordinates).NotEmpty();
             RuleFor(x => x.UserId).NotEmpty().NotNull();
             RuleFor(x => x.City).Length(2, 30);
-            RuleFor(x => x.DistanceToCenter).NotNull().NotEmpty();
+            RuleFor(x => x.DistanceToCenter).NotNull();
             RuleFor(x => x.BedsNumber).GreaterThan(0);
             RuleFor(x => x.ApartmentDescription).Length(1, 255);
             RuleFor(x => x.ApartmentPictureHeader).NotNull();

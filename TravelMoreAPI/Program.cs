@@ -12,6 +12,9 @@ using TravelMoreAPI.Models;
 using TravelMoreAPI.Repositories;
 using TravelMoreAPI.Repositories.BookingRepository;
 using TravelMoreAPI.Services;
+using TravelMoreAPI.Services.ApartmentService;
+using TravelMoreAPI.Services.BookingService;
+using TravelMoreAPI.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,11 +90,14 @@ builder.Services.Configure<JwtTokenOptions>(builder.Configuration.GetSection("Jw
 builder.Services.AddDbContext<UserDbContext>(
     o => o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
+builder.Services.AddScoped<IApartmentService, ApartmentService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
+builder.Services.AddScoped<ITokenCreationService, TokenCreationService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IApartmentRepository, ApartmentRepository>();
-builder.Services.AddScoped<ISearchService, SearchService>();
-builder.Services.AddScoped<ITokenCreationService, TokenCreationService>();
 
 var app = builder.Build();
 

@@ -1,6 +1,7 @@
 ﻿using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
 using Microsoft.EntityFrameworkCore;
+using TravelMoreAPI.Exceptions;
 
 namespace TravelMoreAPI.Repositories
 {
@@ -17,21 +18,31 @@ namespace TravelMoreAPI.Repositories
         {
             _context.Users.Add(user);
 
-            _context.SaveChanges();
-            
+            _context.SaveChanges(); 
         }
 
-        public User? GetUserById(Guid id)
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        public User GetUserById(Guid id)
         {
             var user = _context.Users.Include(u => u.UserPicture).Include(u => u.Apartment).FirstOrDefault(x => x.UserId == id);
-
+            if (user == null)
+            {
+                throw new UserNotFoundException(id);
+            }
             return user;
         }
 
-        public Profile? GetUserProfileById(Guid id)
+        public Profile GetUserProfileById(Guid id)
         {
             var user = _context.Users.Include(x => x.UserPicture).FirstOrDefault(x => x.UserId == id);
-            if (user == null) throw new Exception("User not found");
+            if (user == null)
+            {
+                throw new UserNotFoundException(id);
+            } 
 
             var userProfile = new Profile();
             userProfile.ApartmentId = user.ApartmentId;
@@ -40,10 +51,6 @@ namespace TravelMoreAPI.Repositories
             userProfile.UserPicture = user.UserPicture;
 
             return userProfile;
-        }
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
         }
 
         public IEnumerable<User> GetUsers()
@@ -62,9 +69,14 @@ namespace TravelMoreAPI.Repositories
             return _context.Users.FirstOrDefault(x => x.UserName == userName);
         }
 
-        public User? GetUserByApartmentID(Guid apartmentID)
+        public User GetUserByApartmentId(Guid apartmentId)
         {
-            return _context.Users.FirstOrDefault(x => x.ApartmentId == apartmentID);
+            var user = _context.Users.FirstOrDefault(x => x.ApartmentId == apartmentId);
+            if (user == null) 
+            {
+                throw new UserWithApartmentIdNotFoundException(apartmentId);
+            }
+            return user;
         }
 
     }

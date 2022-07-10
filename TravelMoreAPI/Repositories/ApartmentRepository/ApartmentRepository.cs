@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
+using TravelMoreAPI.Exceptions;
 using TravelMoreAPI.Models.Dtos;
 
 namespace TravelMoreAPI.Repositories
@@ -14,9 +15,14 @@ namespace TravelMoreAPI.Repositories
             _context = context;
         }
 
-        public Apartment? GetApartmentById(Guid id)
+        public Apartment GetApartmentById(Guid id)
         {
-            return _context.Apartments.Include(u => u.ApartmentPicture).FirstOrDefault(x => x.ApartmentId == id);
+            var apartment = _context.Apartments.Include(u => u.ApartmentPicture).FirstOrDefault(x => x.ApartmentId == id);
+            if (apartment == null)
+            {
+                throw new ApartmentNotFoundException(id);
+            }
+            return apartment;
         }
 
         public IEnumerable<Apartment> GetApartments(int n)

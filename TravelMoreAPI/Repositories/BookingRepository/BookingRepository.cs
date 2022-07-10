@@ -2,7 +2,7 @@
 using TravelMoreAPI.Data;
 using TravelMoreAPI.Entities;
 using TravelMoreAPI.Entities.Helpers;
-
+using TravelMoreAPI.Exceptions;
 
 namespace TravelMoreAPI.Repositories.BookingRepository
 {
@@ -26,15 +26,25 @@ namespace TravelMoreAPI.Repositories.BookingRepository
             _context.SaveChanges();
         }
 
-        public Booking? GetBookingById(Guid id)
+        public Booking GetBookingById(Guid id)
         {
             var booking = _context.Bookings.FirstOrDefault(x => x.BookingId == id);
+            if (booking == null)
+            {
+                throw new BookingNotFoundException(id);
+            }
             return booking;
         }
 
 
         public void SaveChanges()
         {
+            _context.SaveChanges();
+        }
+
+        public void DeleteBooking(Booking booking)
+        {
+            _context.Remove(booking);
             _context.SaveChanges();
         }
 
@@ -53,13 +63,6 @@ namespace TravelMoreAPI.Repositories.BookingRepository
             }
             
             return bookingProfile;
-        }
-
-
-        public void DeleteBooking(Booking booking)
-        {
-            _context.Remove(booking);
-            _context.SaveChanges();
         }
 
         List<GuestProfile> IBookingRepository.GetGuestProfile(Guid id)
