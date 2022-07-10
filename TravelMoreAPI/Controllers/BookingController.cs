@@ -31,7 +31,7 @@ namespace TravelMoreAPI.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, ModelState);
             }
             var booking = _bookingService.CreateBooking(bookingDto);
-            return booking == null ? BadRequest() : Ok(booking);
+            return Created($"https://localhost:7043/api/Booking/CreateBooking", booking);
         }
 
 
@@ -82,7 +82,7 @@ namespace TravelMoreAPI.Controllers
         {
             var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId")!.Value;
             var deletedBooking = _bookingService.DeleteBooking(id, Guid.Parse(claimId));
-            return Ok(deletedBooking);
+            return NoContent();
         }
     }    
 }

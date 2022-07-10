@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TravelMoreAPI.Entities;
-using TravelMoreAPI.Entities.Helpers;
 using TravelMoreAPI.Models.Dtos;
-using TravelMoreAPI.Repositories;
-using TravelMoreAPI.Repositories.BookingRepository;
 using TravelMoreAPI.Services.ApartmentService;
 
 namespace TravelMoreAPI.Controllers
@@ -18,7 +15,7 @@ namespace TravelMoreAPI.Controllers
     {
         private readonly IApartmentService _apartmentService;
 
-        public ApartmentController(IApartmentService apartmentService, IApartmentRepository apartmentRepository, IUserRepository userRepository, IBookingRepository bookingRepository)
+        public ApartmentController(IApartmentService apartmentService)
         {
             _apartmentService = apartmentService ?? throw new ArgumentNullException(nameof(apartmentService));
         }
@@ -33,7 +30,7 @@ namespace TravelMoreAPI.Controllers
 
         [Authorize]
         [HttpGet("{id}")]
-        public IActionResult GetApartmentById(Guid id)
+        public ActionResult GetApartmentById(Guid id)
         {
             var apartment = _apartmentService.GetApartmentById(id);
             return apartment == null ? NotFound() : Ok(apartment);
@@ -51,13 +48,13 @@ namespace TravelMoreAPI.Controllers
             }
 
             var apartment = _apartmentService.CreateApartment(apartmentDto);
-            return Created($"https://localhost:7043/api/User/AddApartment", apartment.ApartmentId);
+            return Created($"https://localhost:7043/api/Apartment/AddApartment", apartment.ApartmentId);
         }
 
 
         [Authorize]
         [HttpDelete("{id}")]
-        public IActionResult DeleteApartment(Guid id)
+        public ActionResult DeleteApartment(Guid id)
         {
             var claimId = User.Claims.FirstOrDefault(x => x.Type == "UserId")!.Value;
             if (claimId != id.ToString())

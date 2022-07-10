@@ -10,7 +10,6 @@ namespace TravelMoreAPI.Entities
         public Guid HostId { get; set; }
         public Guid GuestId { get; set; }
         public Guid ApartmentId { get; set; }
-        public Guid UserId { get; set; }
         public string City { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace TravelMoreAPI.Entities
+﻿namespace TravelMoreAPI.Entities
 {
     public class User
     {

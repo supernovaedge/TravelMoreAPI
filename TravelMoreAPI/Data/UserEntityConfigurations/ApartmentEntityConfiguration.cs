@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 using TravelMoreAPI.Entities;
 
 public class ApartmentEntityConfiguration : IEntityTypeConfiguration<Apartment>
@@ -21,14 +20,14 @@ public class ApartmentEntityConfiguration : IEntityTypeConfiguration<Apartment>
             .IsRequired()
             .HasMaxLength(500);
 
+        builder.Property(u => u.ApartmentCoordinates)
+            .IsRequired()
+            .HasMaxLength(100);
+
         builder.Property(u => u.DistanceToCenter)
             .IsRequired();
 
         builder.Property(u => u.BedsNumber)
             .IsRequired();
-
-        //builder.Property(u => u.ApartmentPicture)
-            //.IsRequired();
-
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-using TravelMoreAPI.Entities.Helpers;
+﻿using TravelMoreAPI.Entities.Helpers;
 
 namespace TravelMoreAPI.Entities
 {
@@ -15,6 +13,5 @@ namespace TravelMoreAPI.Entities
         public string? ApartmentCoordinates { get; set; }
         public ApartmentPicture64 ApartmentPicture { get; set; }
         public bool? ApartmentStatus { get; set; }
-
     }
 }

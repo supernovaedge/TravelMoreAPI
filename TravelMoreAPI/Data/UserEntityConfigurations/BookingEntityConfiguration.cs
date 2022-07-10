@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 using TravelMoreAPI.Entities;
 
 public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
@@ -17,9 +16,6 @@ public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
             .IsRequired();
         
         builder.Property(u => u.HostTo)
-            .IsRequired();
-
-        builder.Property(u => u.UserId)
             .IsRequired();
         
         builder.Property(u => u.GuestId)
