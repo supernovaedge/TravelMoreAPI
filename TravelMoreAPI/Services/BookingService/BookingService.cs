@@ -83,7 +83,8 @@ namespace TravelMoreAPI.Services.BookingService
                 {
                     if (booking.HostFrom.Date <= bookingEntity.stayTo.Date && bookingEntity.stayFrom.Date <= booking.HostTo.Date)
                     {
-                        _bookingRepository.GetBookingById(bookingEntity.BookingId).CurrentStatus = GuestStatusEnum.NotPossible;
+                        var bookingNotPossible = _bookingRepository.GetBookingById(bookingEntity.BookingId);
+                        if(bookingNotPossible.CurrentStatus != GuestStatusEnum.Denied ) bookingNotPossible.CurrentStatus = GuestStatusEnum.NotPossible;
                     }
                 }
             }
