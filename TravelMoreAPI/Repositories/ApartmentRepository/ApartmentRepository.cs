@@ -36,10 +36,11 @@ namespace TravelMoreAPI.Repositories
             {
                 return _context.Apartments.Include(x => x.ApartmentPicture);
             }
-
+            
             return _context.Apartments.Where(x => x.Address.Contains(searchCriteria.Address)
+                                            || x.City.Contains(searchCriteria.Address.ToLower())                               
                                             || (x.BedsNumber == searchCriteria.BedNumber
-                                            && x.City == searchCriteria.City))
+                                            && x.City.ToLower() == searchCriteria.City.ToLower()))
                                             .Include(x => x.ApartmentPicture);
         }
 
